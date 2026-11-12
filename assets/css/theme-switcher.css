@@ -1,0 +1,333 @@
+/* ==========================================================================
+   DARBAR FLAVORS SPICES - 10 ROYAL GRADIENT THEME COLOR SWITCHER
+   Allows testing 10 luxury royal color combinations live across the site.
+   ========================================================================== */
+
+/* Floating Theme Trigger Button (Pinned on left side of screen) */
+.theme-switcher-pill {
+  position: fixed;
+  left: 18px;
+  bottom: 85px;
+  z-index: 9995;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(14, 14, 14, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1.5px solid var(--gold-primary);
+  border-radius: var(--radius-full);
+  padding: 8px 16px 8px 12px;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7), 0 0 15px rgba(218, 165, 32, 0.3);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  animation: themePulse 3s infinite;
+}
+
+.theme-switcher-pill:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.85), 0 0 25px rgba(218, 165, 32, 0.5);
+  border-color: var(--gold-light);
+}
+
+.theme-pill-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--gold-metallic);
+  color: #0E0E0E;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.theme-pill-text {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: #F5E6CC;
+}
+
+.theme-pill-badge {
+  background: var(--spice-red);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 9999px;
+  min-width: 20px;
+  text-align: center;
+}
+
+@keyframes themePulse {
+  0%, 100% { box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7), 0 0 15px rgba(218, 165, 32, 0.3); }
+  50% { box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7), 0 0 25px rgba(218, 165, 32, 0.6); }
+}
+
+/* Modal Backdrop */
+.theme-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 10010;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.theme-modal-backdrop.active {
+  display: flex;
+  opacity: 1;
+}
+
+/* Modal Card */
+.theme-modal-card {
+  background: #141414;
+  border: 2px solid var(--gold-primary);
+  border-radius: 20px;
+  max-width: 680px;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.9), 0 0 45px rgba(218, 165, 32, 0.35);
+  overflow: hidden;
+  animation: modalScaleUp 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+@keyframes modalScaleUp {
+  from { transform: scale(0.92); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.theme-modal-header {
+  padding: 18px 24px;
+  background: #0E0E0E;
+  border-bottom: 1px solid rgba(218, 165, 32, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.theme-modal-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.theme-modal-title h3 {
+  margin: 0;
+  font-size: 1.45rem;
+  color: var(--gold-light);
+  line-height: 1.2;
+}
+
+.theme-modal-close {
+  background: transparent;
+  border: none;
+  color: #A0A0A0;
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  padding: 0 4px;
+}
+
+.theme-modal-close:hover {
+  color: var(--gold-light);
+}
+
+.theme-modal-subtitle {
+  padding: 12px 24px 8px;
+  margin: 0;
+  font-size: 0.92rem;
+  color: #BDBDBD;
+  line-height: 1.6;
+  background: #161616;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* 10 Theme Options List Grid */
+.theme-options-grid {
+  padding: 18px 24px;
+  overflow-y: auto;
+  max-height: calc(90vh - 220px);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.theme-option-card {
+  background: #1C1C1C;
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  text-align: left;
+}
+
+.theme-option-card:hover {
+  border-color: var(--gold-primary);
+  background: #242424;
+  transform: translateY(-2px);
+}
+
+.theme-option-card.active {
+  border-color: var(--gold-primary);
+  background: rgba(218, 165, 32, 0.12);
+  box-shadow: 0 0 16px rgba(218, 165, 32, 0.35);
+}
+
+.theme-number-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #282828;
+  color: #E0E0E0;
+  font-weight: 800;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.2s ease;
+}
+
+.theme-option-card.active .theme-number-badge {
+  background: var(--gold-metallic);
+  color: #0E0E0E;
+  border-color: var(--gold-light);
+  box-shadow: 0 0 10px rgba(218, 165, 32, 0.5);
+}
+
+.theme-details-wrap {
+  flex: 1;
+  min-width: 0;
+}
+
+.theme-swatch-bar {
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  margin-bottom: 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.theme-name-ur {
+  display: block;
+  font-size: 0.95rem;
+  color: #FFFFFF;
+  line-height: 1.3;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.theme-name-en {
+  display: block;
+  font-size: 0.74rem;
+  color: #A8A8A8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.theme-badge-click {
+  font-size: 0.68rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 1px 6px;
+  border-radius: 4px;
+  color: #DDD;
+  letter-spacing: 0.3px;
+}
+
+.theme-option-card.active .theme-badge-click {
+  background: var(--gold-primary);
+  color: #0E0E0E;
+  font-weight: 700;
+  border-color: var(--gold-light);
+}
+
+.theme-tagline-desc {
+  font-size: 0.76rem;
+  color: #9E9E9E;
+  margin: 4px 0 0;
+  line-height: 1.4;
+}
+
+.theme-option-card.active .theme-tagline-desc {
+  color: #EAEAEA;
+}
+
+.theme-check-icon {
+  color: var(--gold-primary);
+  font-size: 1.1rem;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  flex-shrink: 0;
+}
+
+.theme-option-card.active .theme-check-icon {
+  opacity: 1;
+}
+
+/* Modal Footer */
+.theme-modal-footer {
+  padding: 14px 24px;
+  background: #0E0E0E;
+  border-top: 1px solid rgba(218, 165, 32, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.selected-theme-info {
+  font-size: 0.88rem;
+  color: #CCCCCC;
+}
+
+.selected-theme-info strong {
+  color: var(--gold-light);
+  margin-left: 6px;
+}
+
+/* Mobile responsive: Keep screen 100% clean and clutter-free like authentic top-tier food brands */
+@media (max-width: 768px) {
+  .theme-switcher-pill {
+    display: none !important; /* Hide floating pill on mobile so products and UI are completely clear */
+  }
+  .theme-options-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 14px;
+  }
+  .theme-modal-card {
+    max-height: 94vh;
+  }
+  .theme-modal-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    text-align: center;
+  }
+}

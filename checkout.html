@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout &amp; Order Confirmation | Darbar Flavors Spices</title>
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0E0E0E">
+
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+  <link rel="stylesheet" href="assets/css/toast.css">
+  <link rel="stylesheet" href="assets/css/theme-switcher.css">
+  <link rel="stylesheet" href="assets/css/theme-presets.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-inner" style="justify-content: space-between;">
+      <a href="index.html" class="brand-logo" title="Darbar Flavors Spices">
+        <img src="assets/images/logo.png" alt="Darbar Flavors Spices Logo" class="brand-logo-img" onerror="this.onerror=null; this.src='assets/images/logo.svg';">
+        <div class="brand-text-block">
+          <span class="brand-name">DARBAR</span>
+          <span class="brand-tagline">Flavors &amp; Spices</span>
+          <span class="brand-urdu font-urdu">دربار فلیورز اسپائسز</span>
+        </div>
+      </a>
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <button type="button" class="lang-switch-btn" id="langSwitchBtn" onclick="DarbarApp.toggleLanguage()" title="Switch Language / زبان تبدیل کریں">
+          <i class="fa-solid fa-globe"></i>
+          <span id="langSwitchLabel">اردو (Urdu)</span>
+        </button>
+        <div style="font-size: 0.95rem; color: var(--gold-light); display: flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-lock" style="color: var(--gold-primary);"></i> 256-Bit SSL Encrypted Checkout
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero" style="padding: 35px 0;">
+    <div class="container">
+      <h1>Secure Checkout</h1>
+      <div class="urdu-title font-urdu">ڈلیوری معلومات اور آرڈر کی تصدیق</div>
+      <div class="breadcrumbs">
+        <a href="index.html">Home</a>
+        <i class="fa-solid fa-chevron-right" style="font-size: 0.65rem;"></i>
+        <a href="cart.html">Cart</a>
+        <i class="fa-solid fa-chevron-right" style="font-size: 0.65rem;"></i>
+        <span>Checkout</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN CHECKOUT SECTION -->
+  <section class="section" style="padding-top: 40px;">
+    <div class="container">
+      <div class="checkout-grid">
+        
+        <!-- LEFT: Customer Information Form -->
+        <div class="checkout-box">
+          <h2 class="checkout-box-title">
+            <i class="fa-solid fa-truck-ramp-box" style="color: var(--gold-primary);"></i>
+            <span>Delivery &amp; Customer Information</span>
+          </h2>
+
+          <form id="checkoutForm" onsubmit="return false;">
+            <!-- Full Name -->
+            <div class="form-group">
+              <label for="checkoutName" class="form-label">
+                Full Name (پورا نام) <span style="color: var(--spice-red);">*</span>
+              </label>
+              <input type="text" id="checkoutName" class="form-control" placeholder="e.g. Muhammad Ahmed" required>
+            </div>
+
+            <!-- Phone Numbers -->
+            <div class="form-row-2">
+              <div class="form-group">
+                <label for="checkoutPhone" class="form-label">
+                  Phone Number (موبائل نمبر) <span style="color: var(--spice-red);">*</span>
+                </label>
+                <input type="tel" id="checkoutPhone" class="form-control" placeholder="0300 1234567" required>
+              </div>
+
+              <div class="form-group">
+                <label for="checkoutWhatsApp" class="form-label">
+                  WhatsApp Number (واٹس ایپ)
+                </label>
+                <input type="tel" id="checkoutWhatsApp" class="form-control" placeholder="0300 1234567">
+                <label style="display: flex; align-items: center; gap: 6px; font-size: 0.85rem; color: #666; margin-top: 6px; cursor: pointer;">
+                  <input type="checkbox" id="sameAsPhoneCheck" checked>
+                  <span>Same as contact phone number</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- City & Province -->
+            <div class="form-row-2">
+              <div class="form-group">
+                <label for="checkoutCity" class="form-label">
+                  City (شہر) <span style="color: var(--spice-red);">*</span>
+                </label>
+                <input type="text" id="checkoutCity" class="form-control" placeholder="e.g. Lahore, Karachi, Islamabad, Rawalpindi..." required>
+              </div>
+
+              <div class="form-group">
+                <label for="checkoutProvince" class="form-label">Province (صوبہ)</label>
+                <select id="checkoutProvince" class="form-control">
+                  <option value="Punjab">Punjab</option>
+                  <option value="Sindh">Sindh</option>
+                  <option value="KPK">Khyber Pakhtunkhwa</option>
+                  <option value="Balochistan">Balochistan</option>
+                  <option value="Islamabad">Islamabad Capital</option>
+                  <option value="AJK">Azad Kashmir</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Complete Address -->
+            <div class="form-group">
+              <label for="checkoutAddress" class="form-label">
+                Complete Delivery Address (مکمل پتہ) <span style="color: var(--spice-red);">*</span>
+              </label>
+              <textarea id="checkoutAddress" class="form-control" rows="3" placeholder="House / Flat #, Street #, Sector / Colony, Famous Landmark..." required></textarea>
+            </div>
+
+            <!-- Order Notes -->
+            <div class="form-group">
+              <label for="checkoutNotes" class="form-label">Order Notes / Special Delivery Instructions (Optional)</label>
+              <input type="text" id="checkoutNotes" class="form-control" placeholder="e.g. Call before delivery, deliver after 2 PM...">
+            </div>
+
+            <!-- Payment Methods Selection -->
+            <div style="margin-top: 30px;">
+              <h3 style="font-size: 1.2rem; margin-bottom: 12px; font-weight: 700;">
+                Select Payment Method:
+              </h3>
+              
+              <div class="payment-methods-list">
+                <div class="payment-method-card active" data-payment="cod">
+                  <i class="fa-solid fa-hand-holding-dollar" style="font-size: 1.6rem; color: var(--gold-primary);"></i>
+                  <div style="flex: 1;">
+                    <strong style="display: block; font-size: 1.05rem;">Cash on Delivery (کیش آن ڈلیوری)</strong>
+                    <span style="font-size: 0.85rem; color: #666;">Pay cash to the courier representative when you receive your spice package.</span>
+                  </div>
+                  <i class="fa-solid fa-circle-check" style="color: var(--gold-primary); font-size: 1.2rem;"></i>
+                </div>
+
+                <div class="payment-method-card" data-payment="bank">
+                  <i class="fa-solid fa-building-columns" style="font-size: 1.6rem; color: #2E7D32;"></i>
+                  <div style="flex: 1;">
+                    <strong style="display: block; font-size: 1.05rem;">Bank Transfer / JazzCash / Easypaisa</strong>
+                    <span style="font-size: 0.85rem; color: #666;">Transfer payment directly and send payment screenshot via WhatsApp.</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Bank details expandable -->
+              <div id="bankDetailsBox" style="display: none; background: #FAF8F5; border: 1.5px solid var(--border-gold-subtle); padding: 18px; border-radius: 8px; margin-top: 10px; font-size: 0.95rem; line-height: 1.8;">
+                <h5 style="color: var(--gold-dark); margin-bottom: 6px;">Payment Account Details:</h5>
+                <strong>Meezan Bank Ltd</strong><br>
+                Account Title: Darbar Flavors Spices<br>
+                Account Number: 01020304050607<br>
+                IBAN: PK42MEZN0001020304050607<br>
+                <div style="margin-top: 8px; color: #B22222; font-weight: 700;">
+                  JazzCash / Easypaisa: 0310-2465004
+                </div>
+              </div>
+            </div>
+
+          </form>
+        </div>
+
+        <!-- RIGHT: Order Summary & Place Order -->
+        <div class="checkout-box">
+          <h2 class="checkout-box-title">
+            <i class="fa-solid fa-receipt" style="color: var(--gold-primary);"></i>
+            <span>Order Summary</span>
+          </h2>
+
+          <div id="checkoutSummaryItems" style="max-height: 280px; overflow-y: auto; margin-bottom: 18px;">
+            <!-- Populated by checkout.js -->
+          </div>
+
+          <table class="order-summary-table">
+            <tr>
+              <td>Subtotal:</td>
+              <td style="text-align: right; font-weight: 700;" id="checkoutSubtotal">Rs. 0</td>
+            </tr>
+            <tr class="order-total-row">
+              <td>Total Order Amount:</td>
+              <td style="text-align: right; color: var(--spice-red);" id="checkoutTotal">Rs. 0</td>
+            </tr>
+          </table>
+
+          <div style="margin-top: 12px; font-size: 0.82rem; color: #555; background: #FAF8F5; padding: 10px 14px; border-radius: 6px; border: 1px dashed #DDD;">
+            <i class="fa-brands fa-whatsapp" style="color: #25D366;"></i> Delivery, courier &amp; dispatch details will be confirmed directly with the shopkeeper on WhatsApp.
+          </div>
+
+          <!-- Actions -->
+          <div style="display: flex; flex-direction: column; gap: 14px; margin-top: 24px;">
+            
+            <!-- WhatsApp Order (Featured) -->
+            <button type="button" class="btn btn-whatsapp btn-block" style="padding: 16px; font-size: 1.05rem;" onclick="CheckoutController.submitViaWhatsApp()">
+              <i class="fa-brands fa-whatsapp" style="font-size: 1.4rem;"></i>
+              <span>Send Order via WhatsApp (واٹس ایپ آرڈر)</span>
+            </button>
+            <small style="text-align: center; color: #4B5563; font-size: 0.85rem;">
+              Clicking will generate your itemized invoice directly in WhatsApp for instant booking.
+            </small>
+
+            <div style="text-align: center; position: relative; margin: 4px 0;">
+              <span style="background: #fff; padding: 0 10px; color: #9CA3AF; font-size: 0.85rem; position: relative; z-index: 2;">OR Place Website Order</span>
+              <div style="position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: #E5E7EB; z-index: 1;"></div>
+            </div>
+
+            <!-- Standard COD Website Submit -->
+            <button type="button" class="btn btn-primary btn-block" style="padding: 14px; font-size: 1.05rem;" onclick="CheckoutController.submitWebsiteOrder()">
+              <i class="fa-solid fa-check-circle"></i> Place Order (Cash on Delivery)
+            </button>
+
+          </div>
+
+          <div style="margin-top: 20px; padding: 14px; background: #F9F7F3; border-radius: 8px; font-size: 0.85rem; color: #6B7280; line-height: 1.7;">
+            <strong>Need Help?</strong> Contact our customer support team:<br>
+            📞 Phone / WhatsApp: <strong style="color: #111; display: inline-block;">+92 310 2465004</strong>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer" style="padding-top: 30px;">
+    <div class="container footer-bottom">
+      <div>&copy; 2026 <strong>Darbar Flavors Spices</strong>. All rights reserved.</div>
+      <div>WhatsApp Support: +92 310 2465004</div>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script src="assets/js/products-data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/checkout.js"></script>
+  <script src="assets/js/theme-switcher.js"></script>
+</body>
+</html>

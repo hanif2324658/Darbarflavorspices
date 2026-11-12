@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details | Darbar Flavors Spices</title>
+  <meta name="description" content="View authentic freshly-milled organic spices, ingredients, cooking recipes, and customer reviews at Darbar Flavors Spices.">
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0E0E0E">
+
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+  <link rel="stylesheet" href="assets/css/toast.css">
+  <link rel="stylesheet" href="assets/css/theme-switcher.css">
+  <link rel="stylesheet" href="assets/css/theme-presets.css">
+</head>
+<body>
+
+  <!-- MAIN HEADER (WOODMART STYLE) -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <button class="mobile-toggle-btn" aria-label="Open Navigation"><i class="fa-solid fa-bars"></i></button>
+
+      <!-- Brand Logo (Official Finalized Gold Flame Logo) -->
+      <a href="index.html" class="brand-logo" title="Darbar Flavors Spices">
+        <img src="assets/images/logo.png" alt="Darbar Flavors Spices Logo" class="brand-logo-img" onerror="this.onerror=null; this.src='assets/images/logo.svg';">
+        <div class="brand-text-block">
+          <span class="brand-name">DARBAR</span>
+          <span class="brand-tagline">Flavors &amp; Spices</span>
+          <span class="brand-urdu font-urdu" style="display: none;">دربار فلیورز اسپائسز</span>
+        </div>
+      </a>
+
+      <div class="header-search">
+        <div class="search-input-wrap">
+          <input type="text" class="site-search-input" placeholder="Search authentic spices (Biryani, Haldi, Nihari...)" aria-label="Search Spices">
+          <button class="search-btn" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+        <div class="search-results-dropdown"></div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Language Switcher Button (English / اردو) -->
+        <button type="button" class="lang-switch-btn" id="langSwitchBtn" onclick="DarbarApp.toggleLanguage()" title="Switch Language / زبان تبدیل کریں" style="background: rgba(197, 160, 89, 0.16); border: 1.5px solid var(--gold-primary); color: #FFFFFF; padding: 7px 16px; border-radius: 9999px; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; transition: all 0.25s ease;">
+          <i class="fa-solid fa-globe" style="color: var(--gold-light);"></i>
+          <span id="langSwitchLabel">اردو (Urdu)</span>
+        </button>
+
+        <!-- WhatsApp Call / Order Support Box -->
+        <a href="https://wa.me/923102465004?text=Hello%20Darbar%20Flavors!%20I%20would%20like%20to%20order" target="_blank" class="header-support-pill">
+          <div class="header-support-icon">
+            <i class="fa-brands fa-whatsapp"></i>
+          </div>
+          <div class="header-support-text">
+            <span class="label">WhatsApp Order</span>
+            <span class="phone">+92 310 2465004</span>
+          </div>
+        </a>
+
+        <!-- Prominent Shopping Cart Button (Trigger Drawer) -->
+        <button class="action-btn open-cart-drawer header-cart-btn" title="Shopping Cart" style="background: rgba(197, 160, 89, 0.16); border: 1.5px solid var(--gold-primary); padding: 7px 16px; border-radius: 9999px; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: all 0.25s ease;">
+          <div style="position: relative; display: flex; align-items: center; justify-content: center;">
+            <i class="fa-solid fa-basket-shopping" style="font-size: 1.35rem; color: var(--gold-light);"></i>
+            <span class="badge-count cart-badge-count" style="display: none; position: absolute; top: -8px; right: -10px; background: var(--spice-red); color: #fff; font-size: 0.72rem; font-weight: 800; border-radius: 50%; width: 19px; height: 19px; align-items: center; justify-content: center; border: 2px solid #111;">0</span>
+          </div>
+          <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15;">
+            <span style="font-size: 0.72rem; color: #D1D5DB; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">My Cart</span>
+            <span class="header-cart-total" style="font-weight: 800; color: var(--gold-light); font-size: 0.95rem;">Rs. 0</span>
+          </div>
+        </button>
+      </div>
+    </div>
+          <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.15;">
+            <span style="font-size: 0.72rem; color: #D1D5DB; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">My Cart</span>
+            <span class="header-cart-total" style="font-weight: 800; color: var(--gold-light); font-size: 0.95rem;">Rs. 0</span>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <!-- SECONDARY NAVIGATION MENU (MODERN ENGLISH) -->
+    <nav class="main-nav">
+      <div class="container nav-container">
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a></li>
+          <li><a href="shop.html" class="nav-link">Shop All (95)</a></li>
+          <li><a href="shop.html?category=special-masalay" class="nav-link">Cooking Recipes</a></li>
+          <li><a href="shop.html?category=fries-masalay" class="nav-link">Fries &amp; Snacks</a></li>
+          <li><a href="shop.html?category=spice-powders" class="nav-link">Pure Powders</a></li>
+          <li><a href="shop.html?category=chaat-masalay" class="nav-link">Chaat Masalay</a></li>
+          <li><a href="shop.html?category=sauces" class="nav-link">Sauces &amp; Mayos</a></li>
+          <li><a href="shop.html?category=deals" class="nav-link"><span class="nav-badge-deal">Hot Deals</span> Saver Packs</a></li>
+          <li><a href="recipes.html" class="nav-link"><i class="fa-solid fa-utensils"></i> Recipes</a></li>
+          <li><a href="about.html" class="nav-link">About Us</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <!-- BREADCRUMBS -->
+  <div style="background: #F3EFEA; padding: 14px 0; border-bottom: 1px solid #E5E0D8;">
+    <div class="container">
+      <div class="breadcrumbs" style="justify-content: flex-start; color: #6B7280;">
+        <a href="index.html" style="color: #4B5563;">Home</a>
+        <i class="fa-solid fa-chevron-right" style="font-size: 0.65rem;"></i>
+        <a href="shop.html" style="color: #4B5563;">Shop All Spices</a>
+        <i class="fa-solid fa-chevron-right" style="font-size: 0.65rem;"></i>
+        <span id="breadcrumbCurrent" style="color: var(--spice-red); font-weight: 700;">Product Detail</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCT DETAIL SECTION -->
+  <section class="section" style="padding-top: 35px;">
+    <div class="container">
+      <div class="product-detail-grid">
+        
+        <!-- Left: Image Gallery -->
+        <div class="detail-gallery">
+          <div class="detail-main-img">
+            <img id="detailMainImage" src="" alt="Product Image">
+          </div>
+          <div class="detail-thumbnails" id="detailThumbnails">
+            <!-- Thumbs populated by product-detail.js -->
+          </div>
+        </div>
+
+        <!-- Right: Product Info & Buy Controls -->
+        <div class="detail-info">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+              <span id="detailCategory" style="color: var(--gold-dark); font-weight: 700; text-transform: uppercase; font-size: 0.82rem; letter-spacing: 1px;">
+                Category
+              </span>
+              <h1 id="detailTitle" class="detail-title">Product Title</h1>
+              <div id="detailUrduTitle" class="detail-urdu-title font-urdu">اردو عنوان</div>
+            </div>
+            <button id="detailWishlistBtn" class="product-wishlist-btn" style="position: static; box-shadow: none; border: 1.5px solid #E5E7EB;" title="Wishlist">
+              <i class="fa-regular fa-heart"></i>
+            </button>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 14px;">
+            <div class="product-rating" style="margin-bottom: 0;">
+              <i class="fa-solid fa-star"></i>
+              <span id="detailRating" style="font-weight: 800; color: #111;">4.9</span>
+              <span id="detailReviewsCount" style="color: #6B7280; font-size: 0.85rem;">(120 reviews)</span>
+            </div>
+            <span id="detailBadge" class="badge-pill" style="background: var(--spice-red); color: #fff; font-size: 0.72rem; padding: 2px 8px; border-radius: 9999px;">
+              Bestseller
+            </span>
+            <span id="detailStockStatus" class="stock-indicator in-stock">
+              <i class="fa-solid fa-circle-check"></i> In Stock (دستیاب ہے)
+            </span>
+          </div>
+
+          <p id="detailShortDesc" style="color: #555; font-size: 0.98rem; line-height: 1.7; margin-bottom: 18px;">
+            Short description goes here...
+          </p>
+
+          <!-- Price Display Box -->
+          <div class="detail-price-box">
+            <span id="detailPrice" class="price">Rs. 0</span>
+            <span id="detailOldPrice" class="old-price">Rs. 0</span>
+            <span id="detailSavingBadge" class="badge-pill" style="background: #2E7D32; color: #fff; font-size: 0.85rem; padding: 4px 12px; border-radius: 9999px; font-weight: 700;">
+              Special Offer
+            </span>
+          </div>
+
+          <!-- Weight Selector Options -->
+          <div class="detail-weight-selector">
+            <h5 style="font-weight: 700; color: #111; margin-bottom: 8px; font-size: 1rem;">
+              Select Net Weight:
+            </h5>
+            <div class="weight-option-buttons" id="detailWeightButtons">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Quantity Stepper -->
+          <div style="margin-bottom: 22px;">
+            <h5 style="font-weight: 700; color: #111; margin-bottom: 8px; font-size: 1rem;">Quantity:</h5>
+            <div class="cart-qty-control" style="border-radius: 8px; padding: 2px;">
+              <button class="qty-btn" style="width: 36px; height: 36px; font-size: 1.1rem;" onclick="ProductDetailController.changeQty(-1)">-</button>
+              <span class="qty-num" id="detailQtyDisplay" style="padding: 0 18px; font-size: 1rem;">1</span>
+              <button class="qty-btn" style="width: 36px; height: 36px; font-size: 1.1rem;" onclick="ProductDetailController.changeQty(1)">+</button>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="detail-actions-group">
+            <button id="detailAddToCartBtn" class="btn btn-primary" style="flex: 1; padding: 14px 20px; font-size: 1rem;" onclick="ProductDetailController.addToCart()">
+              <i class="fa-solid fa-cart-plus"></i> Add to Cart
+            </button>
+            <button class="btn btn-whatsapp" style="flex: 1; padding: 14px 20px; font-size: 1rem;" onclick="ProductDetailController.orderWhatsApp()">
+              <i class="fa-brands fa-whatsapp" style="font-size: 1.3rem;"></i> Order via WhatsApp
+            </button>
+          </div>
+
+          <!-- Trust Badges -->
+          <div style="margin-top: 24px; padding-top: 18px; border-top: 1px solid #E5E7EB; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; font-size: 0.85rem; color: #4B5563;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <i class="fa-solid fa-shield-halved" style="color: var(--gold-dark); font-size: 1.1rem;"></i>
+              <span>100% Pure Spices</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <i class="fa-brands fa-whatsapp" style="color: #25D366; font-size: 1.1rem;"></i>
+              <span>Direct WhatsApp Dealing</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <i class="fa-solid fa-seedling" style="color: var(--gold-dark); font-size: 1.1rem;"></i>
+              <span>Freshly Milled Facility</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- TABS: DESCRIPTION / INGREDIENTS / RECIPE METHOD -->
+      <div class="detail-tabs-section">
+        <div class="detail-tabs-nav">
+          <button class="tab-btn active" data-tab="tabDescription">Product Overview</button>
+          <button class="tab-btn" data-tab="tabIngredients">Pure Ingredients (اجزاء)</button>
+          <button class="tab-btn" data-tab="tabRecipe">Cooking Recipe (طریقہ تیاری)</button>
+          <button class="tab-btn" data-tab="tabReviews">Customer Reviews</button>
+        </div>
+
+        <div id="tabDescription" class="tab-pane active font-urdu"></div>
+        <div id="tabIngredients" class="tab-pane font-urdu"></div>
+        <div id="tabRecipe" class="tab-pane font-urdu"></div>
+        <div id="tabReviews" class="tab-pane">
+          <div style="display: flex; gap: 30px; align-items: center; flex-wrap: wrap; margin-bottom: 24px; background: #FAF8F5; padding: 20px; border-radius: 8px;">
+            <div style="text-align: center;">
+              <div style="font-size: 3rem; font-weight: 800; color: #111; line-height: 1;">4.9</div>
+              <div style="color: #F59E0B; margin: 4px 0;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+              <span style="font-size: 0.85rem; color: #666;">Overall Store Rating</span>
+            </div>
+            <div style="flex: 1;">
+              <h5 style="margin-bottom: 4px; font-size: 1.1rem;">100% Verified Customer Reviews</h5>
+              <p style="font-size: 0.95rem; color: #666;">Real feedback from customers across Pakistan who ordered and loved Darbar Flavors Spices.</p>
+            </div>
+          </div>
+
+          <div style="border-top: 1px solid #E5E7EB; padding-top: 16px;">
+            <div style="margin-bottom: 16px;">
+              <div style="display: flex; justify-content: space-between;">
+                <strong>Shamaila Tariq (Lahore)</strong>
+                <span style="color: #9CA3AF; font-size: 0.8rem;">2 days ago</span>
+              </div>
+              <div style="color: #F59E0B; font-size: 0.85rem;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+              <p class="font-urdu" style="color: #374151; margin-top: 4px; font-size: 1.05rem;">"واقعی کمال مصالحہ ہے، میرے گھر والوں نے سب سے زیادہ تعریف کی کہ ہوٹل جیسا ذائقہ بنا ہے۔ آئندہ بھی یہیں سے آرڈر کروں گی۔"</p>
+            </div>
+            <div style="margin-bottom: 16px;">
+              <div style="display: flex; justify-content: space-between;">
+                <strong>Kamran Siddiqui (Karachi)</strong>
+                <span style="color: #9CA3AF; font-size: 0.8rem;">5 days ago</span>
+              </div>
+              <div style="color: #F59E0B; font-size: 0.85rem;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+              <p class="font-urdu" style="color: #374151; margin-top: 4px; font-size: 1.05rem;">"اپنی چکی سے پسا ہوا اوریجنل و آرگینک مصالحہ، کالی مرچ اور ہلدی میں خوشبو اور رنگ 100% قدرتی ہے۔ وقت پر ڈلیوری ملی۔"</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RELATED PRODUCTS SECTION -->
+      <div style="margin-top: 60px;">
+        <div class="section-header" style="margin-bottom: 30px;">
+          <h2 class="section-title">Related Spices</h2>
+          <div class="section-urdu-subtitle font-urdu">ملتے جلتے مصالحہ جات</div>
+          <div class="gold-divider"></div>
+        </div>
+
+        <div class="products-grid" id="relatedProductsGrid">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER (WOODMART LUXURY FOOTER) -->
+  <footer class="site-footer">
+    <div class="container footer-top">
+      <div class="footer-col">
+        <a href="index.html" class="brand-logo" style="margin-bottom: 18px;">
+          <img src="assets/images/logo.png" alt="Darbar Flavors Spices Logo" class="brand-logo-img" onerror="this.onerror=null; this.src='assets/images/logo.svg';">
+          <div class="brand-text-block">
+            <span class="brand-name">DARBAR</span>
+            <span class="brand-tagline">Flavors &amp; Spices</span>
+            <span class="brand-urdu font-urdu">دربار فلیورز اسپائسز</span>
+          </div>
+        </a>
+        <p class="footer-desc">
+          <strong>Darbar Flavors Spices</strong> brings authentic freshly-milled organic, 100% pure culinary spices and seasonings straight to your kitchen.
+          <span class="font-urdu" style="display: block; margin-top: 6px; font-size: 0.95rem; color: var(--gold-light);">اپنی چکی سے پسا ہوا 100% اوریجنل و آرگینک مصالحہ جات</span>
+        </p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul class="footer-links-list">
+          <li><a href="index.html"><i class="fa-solid fa-angle-right"></i> Home</a></li>
+          <li><a href="shop.html"><i class="fa-solid fa-angle-right"></i> All Spices (Shop)</a></li>
+          <li><a href="deals.html"><i class="fa-solid fa-angle-right"></i> Value Deals &amp; Bundles</a></li>
+          <li><a href="recipes.html"><i class="fa-solid fa-angle-right"></i> Royal Chef Recipes</a></li>
+          <li><a href="about.html"><i class="fa-solid fa-angle-right"></i> About Us</a></li>
+          <li><a href="contact.html"><i class="fa-solid fa-angle-right"></i> Contact &amp; Support</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Spice Collections</h4>
+        <ul class="footer-links-list">
+          <li><a href="shop.html?category=special-masalay"><i class="fa-solid fa-angle-right"></i> Cooking Recipes (31)</a></li>
+          <li><a href="shop.html?category=fries-masalay"><i class="fa-solid fa-angle-right"></i> Fries &amp; Snack Seasonings (35)</a></li>
+          <li><a href="shop.html?category=spice-powders"><i class="fa-solid fa-angle-right"></i> Pure Ground Powders (10)</a></li>
+          <li><a href="shop.html?category=chaat-masalay"><i class="fa-solid fa-angle-right"></i> Royal Chaat Masalay (8)</a></li>
+          <li><a href="shop.html?category=sauces"><i class="fa-solid fa-angle-right"></i> Gourmet Sauces &amp; Mayos (8)</a></li>
+          <li><a href="shop.html?category=deals"><i class="fa-solid fa-angle-right"></i> Mega Saver Deals (3)</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Customer Support</h4>
+        <div class="footer-contact-item">
+          <i class="fa-solid fa-location-dot"></i>
+          <span><a href="https://maps.google.com/maps?q=Darbar%2BFlavour%2Band%2Bspices%2BMurad%2BKhan%2BRd%2C%2B%D9%84%DB%8C%D8%A7%D8%B1%DB%8C%2B%D9%B9%D8%A7%D8%A4%D9%86%2C%2B72500%2C%2B%D8%B3%D9%86%D8%AF%DA%BE%2C%2BPK&sll=24.85600548,67.00295892" target="_blank" style="color: #E0E0E0;" title="Open in Google Maps (گوگل میپس پر لوکیشن دیکھیں)">Murad Khan Rd, Lyari Town, Karachi, Sindh 72500</a></span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="fa-solid fa-envelope"></i>
+          <span>Email: <a href="mailto:darbar.flavours03@gmail.com" style="color: #fff; font-weight: 600;">darbar.flavours03@gmail.com</a></span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="fa-brands fa-whatsapp" style="color: #25D366;"></i>
+          <span>WhatsApp: <a href="https://wa.me/923102465004" target="_blank" style="color: #fff; font-weight: 700;">+92 310 2465004</a></span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="fa-solid fa-phone"></i>
+          <span>Direct Phone: <a href="tel:+923102465004">+92 310 2465004</a></span>
+        </div>
+      </div>
+    </div>
+    <div class="container footer-bottom" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+      <div>
+        &copy; 2026 <strong>Darbar Flavors Spices</strong>. All rights reserved.
+      </div>
+      <div class="font-urdu">100% اصلی اور خالص مصالحے</div>
+    </div>
+  </footer>
+
+  <!-- FLOATING WHATSAPP -->
+  <div class="floating-whatsapp-widget">
+    <div class="whatsapp-label-pill">
+      <span>Chat on WhatsApp</span>
+    </div>
+    <a href="https://wa.me/923102465004?text=Hello%20Darbar%20Flavors!%20I%20would%20like%20to%20order" target="_blank" class="whatsapp-bubble-btn" aria-label="Order on WhatsApp">
+      <i class="fa-brands fa-whatsapp"></i>
+    </a>
+  </div>
+
+  <!-- CART DRAWER -->
+  <div class="cart-drawer-overlay"></div>
+  <aside class="cart-drawer">
+    <div class="cart-drawer-header">
+      <h3><i class="fa-solid fa-basket-shopping"></i> Your Cart</h3>
+      <button class="close-drawer-btn" aria-label="Close Cart Drawer"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="cart-drawer-items"></div>
+    <div class="cart-drawer-footer">
+      <div class="cart-drawer-subtotal">
+        <span>Total Amount:</span>
+        <span class="drawer-subtotal-amount" style="color: var(--spice-red); font-size: 1.25rem; font-weight: 800;">Rs. 0</span>
+      </div>
+      <div style="font-size: 0.8rem; color: #555; margin: 8px 0 14px; background: #FAF8F5; padding: 8px 12px; border-radius: 6px; border: 1px dashed #DDD;">
+        <i class="fa-brands fa-whatsapp" style="color: #25D366;"></i> Delivery &amp; payment details finalized directly with the shopkeeper on WhatsApp.
+      </div>
+      <div class="cart-drawer-actions">
+        <button type="button" class="btn btn-whatsapp btn-block" onclick="DarbarApp.orderCartOnWhatsApp()" style="display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700;">
+          <i class="fa-brands fa-whatsapp" style="font-size: 1.3rem;"></i> Order on WhatsApp (واٹس ایپ پر آرڈر کریں)
+        </button>
+        <a href="checkout.html" class="btn btn-secondary btn-block" style="margin-top: 8px;">
+          <i class="fa-solid fa-list-check"></i> Review Order Details
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MOBILE OFFCANVAS -->
+  <div class="mobile-nav-drawer">
+    <div class="mobile-drawer-header">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <img src="assets/images/logo.png" alt="Darbar Logo" style="height: 44px; width: 44px; border-radius: 8px; border: 1px solid var(--gold-primary);" onerror="this.onerror=null; this.src='assets/images/logo.svg';">
+        <div>
+          <div style="font-family: 'Cinzel', serif; font-weight: 800; color: var(--gold-light); font-size: 1.1rem; line-height: 1;">DARBAR</div>
+          <div style="font-size: 0.65rem; color: #BBB; letter-spacing: 1.5px;">FLAVORS &amp; SPICES</div>
+        </div>
+      </div>
+      <button class="close-mobile-drawer-btn" style="background: transparent; color: #fff; font-size: 1.4rem;">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    <div class="mobile-nav-links">
+      <a href="index.html" class="mobile-nav-link"><span>Home</span> <i class="fa-solid fa-angle-right"></i></a>
+      <a href="shop.html" class="mobile-nav-link"><span>Shop All Spices</span> <i class="fa-solid fa-angle-right"></i></a>
+      <a href="shop.html?category=special-masalay" class="mobile-nav-link"><span>Special Masalay</span> <i class="fa-solid fa-angle-right"></i></a>
+      <a href="shop.html?category=spice-powders" class="mobile-nav-link"><span>Pure Powders</span> <i class="fa-solid fa-angle-right"></i></a>
+      <a href="deals.html" class="mobile-nav-link"><span>Value Deals</span> <i class="fa-solid fa-fire"></i></a>
+      <a href="recipes.html" class="mobile-nav-link"><span>Recipes</span> <i class="fa-solid fa-utensils"></i></a>
+      <a href="about.html" class="mobile-nav-link"><span>About Us</span> <i class="fa-solid fa-info-circle"></i></a>
+      <a href="contact.html" class="mobile-nav-link"><span>Contact Support</span> <i class="fa-solid fa-phone"></i></a>
+    </div>
+  </div>
+
+  <!-- MOBILE APP BOTTOM BAR -->
+  <nav class="mobile-bottom-bar">
+    <div class="bottom-bar-nav">
+      <a href="index.html" class="bottom-nav-item"><i class="fa-solid fa-house"></i><span>Home</span></a>
+      <a href="shop.html" class="bottom-nav-item"><i class="fa-solid fa-store"></i><span>Shop</span></a>
+      <a href="deals.html" class="bottom-nav-item"><i class="fa-solid fa-fire" style="color: var(--spice-red);"></i><span>Deals</span></a>
+      <a href="javascript:void(0)" class="bottom-nav-item open-cart-drawer" onclick="DarbarApp.openCartDrawer(); return false;">
+        <i class="fa-solid fa-basket-shopping"></i><span>Cart</span>
+        <span class="badge-count cart-badge-count" style="display: none;">0</span>
+      </a>
+      <a href="https://wa.me/923102465004?text=Hello%20Darbar%20Flavors!" target="_blank" class="bottom-nav-item" style="color: #25D366;">
+        <i class="fa-brands fa-whatsapp"></i><span>WhatsApp</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- SCRIPTS -->
+  <script src="assets/js/products-data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/product-detail.js"></script>
+  <script src="assets/js/theme-switcher.js"></script>
+</body>
+</html>

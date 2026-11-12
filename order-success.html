@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Confirmed | Darbar Flavors Spices</title>
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0E0E0E">
+
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+  <link rel="stylesheet" href="assets/css/toast.css">
+  <link rel="stylesheet" href="assets/css/theme-presets.css">
+
+  <style>
+    @media print {
+      .site-header, .site-footer, .no-print, .floating-whatsapp-widget {
+        display: none !important;
+      }
+      body {
+        background: #fff;
+        color: #000;
+      }
+      .invoice-card {
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-inner" style="justify-content: center;">
+      <a href="index.html" class="brand-logo" title="Darbar Flavors Spices">
+        <img src="assets/images/logo.png" alt="Darbar Flavors Spices Logo" class="brand-logo-img" onerror="this.onerror=null; this.src='assets/images/logo.svg';">
+        <div class="brand-text-block">
+          <span class="brand-name">DARBAR</span>
+          <span class="brand-tagline">Flavors &amp; Spices</span>
+          <span class="brand-urdu font-urdu">دربار فلیورز اسپائسز</span>
+        </div>
+      </a>
+    </div>
+  </header>
+
+  <!-- SUCCESS CONTENT -->
+  <section class="section" style="padding-top: 40px; padding-bottom: 80px;">
+    <div class="container" style="max-width: 780px;">
+      
+      <!-- Top banner -->
+      <div style="text-align: center; margin-bottom: 30px;">
+        <div style="width: 78px; height: 78px; border-radius: 9999px; background: #E8F5E9; color: #2E7D32; display: inline-flex; align-items: center; justify-content: center; font-size: 2.4rem; margin-bottom: 14px;">
+          <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <h1 style="font-size: 2.1rem; margin-bottom: 4px;">Thank You! Your Order is Placed</h1>
+        <div class="font-urdu" style="font-size: 1.35rem; color: var(--gold-dark); margin-bottom: 10px;">
+          شکریہ! آپ کا آرڈر کامیابی کے ساتھ موصول ہو چکا ہے۔
+        </div>
+        <p style="color: #666; font-size: 1rem;">
+          Our support team is preparing your package. You will receive dispatch updates on WhatsApp and SMS.
+        </p>
+      </div>
+
+      <!-- Printable Invoice Card -->
+      <div class="invoice-card" style="background: #fff; border-radius: 16px; border: 1.5px solid var(--border-gold-subtle); padding: 36px; box-shadow: var(--shadow-card);">
+        
+        <!-- Invoice Header -->
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #EAE6DF; padding-bottom: 20px; margin-bottom: 24px; flex-wrap: wrap; gap: 14px;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <img src="assets/images/logo.png" alt="Darbar Logo" style="height: 54px; width: 54px; border-radius: 8px; border: 1px solid var(--gold-primary);" onerror="this.onerror=null; this.src='assets/images/logo.svg';">
+            <div>
+              <h3 style="font-size: 1.3rem; color: #111; margin-bottom: 2px; font-family: 'Cinzel', serif;">DARBAR FLAVORS SPICES</h3>
+              <span class="font-urdu" style="font-size: 0.95rem; color: #666;">اپنی چکی سے پسا ہوا 100% اوریجنل و آرگینک مصالحہ جات</span>
+            </div>
+          </div>
+          <div style="text-align: right;">
+            <div style="font-size: 0.85rem; color: #666;">Invoice / Order ID:</div>
+            <strong id="successOrderId" style="font-size: 1.3rem; color: var(--spice-red); display: inline-block;">#DFS-00000</strong>
+            <div id="successOrderDate" style="font-size: 0.82rem; color: #888;">Date: Today</div>
+          </div>
+        </div>
+
+        <!-- Customer & Delivery Info Grid -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 28px; background: #FAF8F5; padding: 20px; border-radius: 10px;">
+          <div>
+            <h5 style="color: var(--gold-dark); font-size: 0.95rem; margin-bottom: 6px;">Customer Details:</h5>
+            <div id="successCustomerName" style="font-weight: 700; font-size: 1rem;">Name: Loading...</div>
+            <div id="successCustomerPhone" style="font-size: 0.9rem; color: #444;">Phone: -</div>
+            <div id="successCustomerWa" style="font-size: 0.9rem; color: #25D366; font-weight: 700;">WhatsApp: -</div>
+          </div>
+
+          <div>
+            <h5 style="color: var(--gold-dark); font-size: 0.95rem; margin-bottom: 6px;">Delivery Details:</h5>
+            <div id="successCustomerCity" style="font-weight: 700; font-size: 1rem;">City: -</div>
+            <div id="successCustomerAddress" style="font-size: 0.9rem; color: #444; line-height: 1.6;">Address: -</div>
+            <div id="successPaymentMethod" style="font-size: 0.9rem; color: var(--spice-red); font-weight: 700; margin-top: 4px;">Payment: Cash on Delivery</div>
+          </div>
+        </div>
+
+        <!-- Items Table -->
+        <h4 style="font-size: 1.1rem; margin-bottom: 12px;">Ordered Items:</h4>
+        <div style="overflow-x: auto; margin-bottom: 24px;">
+          <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.92rem;">
+            <thead>
+              <tr style="background: #F3EFE9; border-bottom: 1px solid #EAE6DF;">
+                <th style="padding: 10px;">Item Description</th>
+                <th style="padding: 10px;">Weight</th>
+                <th style="padding: 10px;">Quantity</th>
+                <th style="padding: 10px; text-align: right;">Total (Rs.)</th>
+              </tr>
+            </thead>
+            <tbody id="successItemsTable">
+              <!-- Populated by script -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Totals -->
+        <div style="display: flex; justify-content: flex-end;">
+          <div style="width: 290px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95rem;">
+              <span>Subtotal:</span>
+              <strong id="successSubtotal">Rs. 0</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95rem;">
+              <span>Delivery &amp; Courier:</span>
+              <span id="successShipping" style="color: #25D366; font-weight: 700;">Direct WhatsApp Deal</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding-top: 10px; border-top: 2px solid #111; font-size: 1.25rem; font-weight: 800; color: var(--spice-red);">
+              <span>Total Bill:</span>
+              <span id="successTotal">Rs. 0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Important Notes -->
+        <div class="font-urdu" style="margin-top: 30px; padding: 14px; background: #FFF9E6; border-left: 4px solid var(--gold-primary); font-size: 0.95rem; color: #666; line-height: 1.8;">
+          <strong>ضروری اطلاع:</strong> آپ کے آرڈر کی تفصیلات موصول ہو چکی ہیں۔ ڈلیوری کا طریقہ کار، چارجز اور پارسل روانگی دکاندار سے براہِ راست واٹس ایپ پر طے کی جائے گی۔ شکریہ!
+        </div>
+
+      </div>
+
+      <!-- Action Buttons (No Print) -->
+      <div class="no-print" style="display: flex; gap: 14px; justify-content: center; margin-top: 32px; flex-wrap: wrap;">
+        <button onclick="window.print()" class="btn btn-secondary" style="color: #111; border-color: #888;">
+          <i class="fa-solid fa-print"></i> Print Invoice Slip
+        </button>
+
+        <a id="successWaChatBtn" href="https://wa.me/923102465004" target="_blank" class="btn btn-whatsapp">
+          <i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp
+        </a>
+
+        <a href="shop.html" class="btn btn-primary">
+          <i class="fa-solid fa-bag-shopping"></i> Continue Shopping
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SCRIPTS -->
+  <script src="assets/js/products-data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const orderId = params.get('orderId');
+
+      let order = null;
+      try {
+        const lastOrder = (typeof SafeStorage !== 'undefined') 
+          ? SafeStorage.getJSON('darbar_last_order', null) 
+          : JSON.parse(localStorage.getItem('darbar_last_order'));
+        if (lastOrder && (!orderId || lastOrder.orderId === orderId)) {
+          order = lastOrder;
+        } else {
+          const allOrders = (typeof SafeStorage !== 'undefined')
+            ? SafeStorage.getJSON('darbar_orders', [])
+            : (JSON.parse(localStorage.getItem('darbar_orders')) || []);
+          order = allOrders.find(o => o.orderId === orderId);
+        }
+      } catch (e) {
+        order = null;
+      }
+
+      if (order) {
+        document.getElementById('successOrderId').textContent = `#${order.orderId}`;
+        document.getElementById('successOrderDate').textContent = `Date: ${order.date || 'Today'}`;
+        document.getElementById('successCustomerName').textContent = `Name: ${order.customer.fullName}`;
+        document.getElementById('successCustomerPhone').textContent = `Phone: ${order.customer.phone}`;
+        document.getElementById('successCustomerWa').textContent = `WhatsApp: ${order.customer.whatsapp}`;
+        document.getElementById('successCustomerCity').textContent = `City: ${order.customer.city}`;
+        document.getElementById('successCustomerAddress').textContent = `Address: ${order.customer.address}`;
+        document.getElementById('successPaymentMethod').textContent = `Payment: ${order.paymentMethod}`;
+
+        document.getElementById('successSubtotal').textContent = `Rs. ${order.subtotal.toLocaleString()}`;
+        document.getElementById('successShipping').textContent = 'Direct WhatsApp Deal';
+        document.getElementById('successTotal').textContent = `Rs. ${order.total.toLocaleString()}`;
+
+        const itemsTable = document.getElementById('successItemsTable');
+        if (itemsTable && order.items) {
+          itemsTable.innerHTML = order.items.map(item => `
+            <tr style="border-bottom: 1px solid #EAE6DF;">
+              <td style="padding: 10px;"><strong>${item.title}</strong> <span class="font-urdu" style="color: #888;">(${item.urduTitle})</span></td>
+              <td style="padding: 10px;">${item.weight}</td>
+              <td style="padding: 10px;">${item.quantity}</td>
+              <td style="padding: 10px; text-align: right; font-weight: 700;">Rs. ${(item.price * item.quantity).toLocaleString()}</td>
+            </tr>
+          `).join('');
+        }
+
+        const waBtn = document.getElementById('successWaChatBtn');
+        if (waBtn) {
+          const msg = encodeURIComponent(`Hello! My order #${order.orderId} was just placed on Darbar Flavors Spices. Please confirm delivery details.`);
+          waBtn.href = `https://wa.me/923102465004?text=${msg}`;
+        }
+      } else {
+        document.getElementById('successOrderId').textContent = orderId ? `#${orderId}` : '#DFS-84920';
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard &amp; Catalog Manager | Darbar Flavors Spices</title>
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+  <meta name="theme-color" content="#0E0E0E">
+
+  <!-- Fonts & Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/toast.css">
+  <link rel="stylesheet" href="assets/css/theme-presets.css">
+  <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body class="admin-body">
+
+  <!-- ============================================================== -->
+  <!-- SECURE ADMIN LOGIN GATEKEEPER (لاگ ان اسکرین) -->
+  <!-- ============================================================== -->
+  <div id="adminLoginGate" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 50% 30%, #1E1A17 0%, #0E0E0E 100%); padding: 20px;">
+    <div style="background: #181512; border: 1.5px solid var(--gold-primary); border-radius: 16px; padding: 36px 30px; max-width: 440px; width: 100%; box-shadow: 0 16px 40px rgba(0,0,0,0.8), var(--gold-glow); text-align: center;">
+      <img src="assets/images/logo.png" alt="Darbar Logo" style="width: 76px; height: 76px; border-radius: 12px; border: 1.5px solid var(--gold-primary); margin-bottom: 16px;" onerror="this.src='assets/images/logo.svg'">
+      <h2 style="font-family: 'Cinzel', serif; color: var(--gold-light); font-size: 1.5rem; margin-bottom: 4px; letter-spacing: 1px;">DARBAR FLAVORS</h2>
+      <p class="font-urdu" style="color: #C5A059; font-size: 1rem; margin-bottom: 24px;">دکاندار ایڈمن پورٹل لاگ ان</p>
+
+      <div id="adminLoginError" style="display: none; background: rgba(178, 34, 34, 0.2); border: 1px solid #B22222; color: #FFA4A4; font-size: 0.85rem; padding: 10px; border-radius: 8px; margin-bottom: 18px; text-align: center;">
+        <i class="fa-solid fa-triangle-exclamation"></i> <span id="adminLoginErrorText">غلط پن یا ای میل! دوبارہ کوشش کریں۔</span>
+      </div>
+
+      <form onsubmit="DarbarAdmin.handleLoginSubmit(event)" style="text-align: left;">
+        <div style="margin-bottom: 16px;">
+          <label style="display: block; font-size: 0.82rem; font-weight: 700; color: #D1D5DB; margin-bottom: 6px;">
+            <i class="fa-solid fa-user-shield" style="color: var(--gold-primary); margin-right: 6px;"></i> Username or Email (ای میل یا یوزر نام)
+          </label>
+          <input type="text" id="loginUsername" class="form-control" placeholder="admin or darbar.flavours03@gmail.com" required style="background: #24201C; border-color: #3D352E; color: #FFF; padding: 12px 14px; font-size: 0.95rem;">
+        </div>
+
+        <div style="margin-bottom: 22px;">
+          <label style="display: block; font-size: 0.82rem; font-weight: 700; color: #D1D5DB; margin-bottom: 6px;">
+            <i class="fa-solid fa-key" style="color: var(--gold-primary); margin-right: 6px;"></i> Security PIN Code (سیکیورٹی پن)
+          </label>
+          <div style="position: relative;">
+            <input type="password" id="loginPassword" class="form-control" placeholder="Default PIN: darbar2026" required style="background: #24201C; border-color: #3D352E; color: #FFF; padding: 12px 42px 12px 14px; font-size: 0.95rem;">
+            <button type="button" onclick="DarbarAdmin.togglePasswordVisibility()" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: transparent; border: none; color: #888; cursor: pointer;">
+              <i class="fa-regular fa-eye" id="togglePasswordIcon"></i>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block" style="padding: 13px; font-size: 1rem; font-weight: 700; letter-spacing: 0.5px; border-radius: 8px;">
+          <i class="fa-solid fa-right-to-bracket"></i> محفوظ لاگ ان کریں (Sign In)
+        </button>
+      </form>
+
+      <div style="margin-top: 22px; font-size: 0.78rem; color: #777; border-top: 1px dashed #2E2822; padding-top: 14px;">
+        <i class="fa-solid fa-shield-halved" style="color: var(--gold-primary);"></i> 256-bit Encrypted Session • Authorized Personnel Only
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- AUTHENTICATED DASHBOARD WRAPPER (صرف لاگ ان کے بعد نظر آئے گا) -->
+  <!-- ============================================================== -->
+  <div id="adminDashboardWrapper" style="display: none;">
+
+  <!-- TOP ADMIN NAVBAR -->
+  <header class="admin-navbar">
+    <a href="admin.html" class="admin-brand">
+      <img src="assets/images/logo.png" alt="Darbar Logo" class="admin-logo-img" onerror="this.onerror=null; this.src='assets/images/logo.svg';">
+      <div class="admin-brand-info">
+        <h1>DARBAR FLAVORS SPICES</h1>
+        <span>Master Catalog &amp; Operations Control Hub</span>
+      </div>
+    </a>
+
+    <div class="admin-top-actions">
+      <div class="live-indicator">
+        <span class="live-dot"></span>
+        <span>Store Live &amp; Connected</span>
+      </div>
+      <a href="index.html" class="btn-visit-store" target="_blank">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        <span>Visit Online Store</span>
+      </a>
+      <button type="button" class="btn-logout" onclick="DarbarAdmin.logout()" style="background: rgba(178, 34, 34, 0.25); border: 1.2px solid #E74C3C; color: #FF9E9E; padding: 7px 16px; border-radius: 6px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; transition: all 0.25s ease;" title="Sign Out from Admin">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span>لاگ آؤٹ (Sign Out)</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN ADMIN DASHBOARD CONTENT -->
+  <main class="admin-container">
+
+    <!-- KPI / METRICS CARDS -->
+    <section class="admin-metrics-grid">
+      <div class="metric-card">
+        <div class="metric-icon-box metric-icon-gold">
+          <i class="fa-solid fa-pepper-hot"></i>
+        </div>
+        <div class="metric-data">
+          <div class="metric-label">Total Spices Catalog</div>
+          <div class="metric-value" id="metricTotalProducts">92</div>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-icon-box metric-icon-blue">
+          <i class="fa-solid fa-receipt"></i>
+        </div>
+        <div class="metric-data">
+          <div class="metric-label">Customer Orders</div>
+          <div class="metric-value" id="metricTotalOrders">0</div>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-icon-box metric-icon-green">
+          <i class="fa-solid fa-comments"></i>
+        </div>
+        <div class="metric-data">
+          <div class="metric-label">Customer Reviews</div>
+          <div class="metric-value" id="metricTotalReviews">3</div>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-icon-box metric-icon-red">
+          <i class="fa-solid fa-wallet"></i>
+        </div>
+        <div class="metric-data">
+          <div class="metric-label">Total Store Sales</div>
+          <div class="metric-value" id="metricTotalSales">Rs. 0</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TABS NAVIGATION -->
+    <div class="admin-tabs">
+      <button class="admin-tab-btn active" data-tab="products">
+        <i class="fa-solid fa-boxes-stacked"></i>
+        <span>Products &amp; Rates Manager (مصالحہ جات و ریٹس)</span>
+      </button>
+      <button class="admin-tab-btn" data-tab="orders">
+        <i class="fa-solid fa-cart-flatbed-suitcase"></i>
+        <span>Customer Orders (کسٹمر آرڈرز)</span>
+      </button>
+      <button class="admin-tab-btn" data-tab="reviews">
+        <i class="fa-solid fa-star"></i>
+        <span>Customer Reviews (گاہکوں کے ریویوز)</span>
+      </button>
+      <button class="admin-tab-btn" data-tab="store">
+        <i class="fa-solid fa-store"></i>
+        <span>Store Details &amp; Location (دکان معلومات و پتہ)</span>
+      </button>
+      <button class="admin-tab-btn" data-tab="inventory">
+        <i class="fa-solid fa-warehouse"></i>
+        <span>Stock Status (اسٹاک کنٹرول)</span>
+      </button>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- TAB 1: PRODUCTS & RATES CRUD MANAGER -->
+    <!-- ============================================================== -->
+    <section id="productsSection">
+      <div class="admin-toolbar">
+        <div class="toolbar-search-wrap">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="adminProductSearch" placeholder="Search product name, Urdu title, category...">
+        </div>
+
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <select id="adminCategoryFilter" class="form-control" style="width: auto; padding: 8px 12px; height: 38px;">
+            <option value="all">All Categories (تمام کیٹیگریز)</option>
+            <option value="special-masalay">Cooking Recipes (ریسیپی مکس)</option>
+            <option value="fries-masalay">Fries &amp; Snacks (فرائز و چپس)</option>
+            <option value="spice-powders">Pure Powders (خالص پسے مصالحے)</option>
+            <option value="chaat-masalay">Chaat Masalay (چاٹ مصالحہ جات)</option>
+            <option value="sauces">Sauces &amp; Mayos (اسپیشل ساسز)</option>
+            <option value="deals">Mega Deals (بچت پیکیجز)</option>
+          </select>
+        </div>
+
+        <div class="toolbar-actions">
+          <button class="btn-tool btn-tool-primary" onclick="DarbarAdmin.openAddProductModal()">
+            <i class="fa-solid fa-plus"></i> Add New Spice (نیا مصالحہ شامل کریں)
+          </button>
+          <button class="btn-tool btn-tool-secondary" onclick="DarbarAdmin.exportProductsJSON()" title="Download updated catalog JSON">
+            <i class="fa-solid fa-download"></i> Export Data
+          </button>
+          <button class="btn-tool btn-tool-danger" onclick="DarbarAdmin.resetCatalogToFactory()" title="Restore 92 original items">
+            <i class="fa-solid fa-rotate-left"></i> Reset Defaults
+          </button>
+        </div>
+      </div>
+
+      <!-- Products Data Table -->
+      <div class="admin-table-card">
+        <div style="overflow-x: auto;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Item Title &amp; Urdu Name</th>
+                <th>Category</th>
+                <th>Base Rate (Price)</th>
+                <th>Weight Variations &amp; Rates</th>
+                <th>Stock</th>
+                <th>Actions (ترمیم / ڈیلیٹ)</th>
+              </tr>
+            </thead>
+            <tbody id="productsTableBody">
+              <!-- Populated dynamically by admin.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- TAB 2: ORDERS MANAGER -->
+    <!-- ============================================================== -->
+    <section id="ordersSection" style="display: none;">
+      <div class="admin-toolbar">
+        <div class="toolbar-filters">
+          <span style="font-size: 0.82rem; font-weight: 700; color: #777;">Filter Status:</span>
+          <button class="filter-pill active" data-filter="all">All</button>
+          <button class="filter-pill" data-filter="pending">Pending</button>
+          <button class="filter-pill" data-filter="confirmed">Confirmed</button>
+          <button class="filter-pill" data-filter="dispatched">Dispatched</button>
+          <button class="filter-pill" data-filter="delivered">Delivered</button>
+        </div>
+
+        <div class="toolbar-search-wrap">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="adminOrderSearch" placeholder="Search customer, phone, order ID, city...">
+        </div>
+
+        <div class="toolbar-actions">
+          <button class="btn-tool btn-tool-secondary" onclick="DarbarAdmin.generateDemoOrders(true)" title="Generate realistic sample orders for testing">
+            <i class="fa-solid fa-plus"></i> Add Demo Orders
+          </button>
+          <button class="btn-tool btn-tool-primary" onclick="DarbarAdmin.exportToCSV()" title="Export orders as CSV sheet">
+            <i class="fa-solid fa-file-csv"></i> Export CSV
+          </button>
+        </div>
+      </div>
+
+      <!-- Orders Data Table -->
+      <div class="admin-table-card">
+        <div style="overflow-x: auto;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Order ID &amp; Date</th>
+                <th>Customer &amp; Address</th>
+                <th>Contact &amp; WhatsApp</th>
+                <th>Spices &amp; Weight Ordered</th>
+                <th>Total Bill</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="ordersTableBody">
+              <!-- Populated dynamically by admin.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- TAB 3: CUSTOMER REVIEWS MANAGER -->
+    <!-- ============================================================== -->
+    <section id="reviewsSection" style="display: none;">
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <div>
+            <h2 class="admin-card-title"><i class="fa-solid fa-comments" style="color: var(--admin-gold);"></i> Real Customer Reviews (اصلی کسٹمر تاثرات)</h2>
+            <div style="font-size: 0.85rem; color: #666; margin-top: 4px;">Manage genuine customer feedback displayed on the home page. You can add new reviews, edit or delete anytime.</div>
+          </div>
+          <button class="btn-tool btn-tool-primary" onclick="DarbarAdmin.openAddReviewModal()">
+            <i class="fa-solid fa-plus"></i> Add Customer Review (نیا ریویو شامل کریں)
+          </button>
+        </div>
+
+        <div class="reviews-admin-grid" id="adminReviewsGrid">
+          <!-- Populated dynamically by admin.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- TAB 4: STORE SETTINGS & LOCATION -->
+    <!-- ============================================================== -->
+    <section id="storeSection" style="display: none;">
+      <div class="admin-card" style="max-width: 900px; margin: 0 auto;">
+        <div class="admin-card-header">
+          <div>
+            <h2 class="admin-card-title"><i class="fa-solid fa-store" style="color: var(--admin-gold);"></i> Store Settings &amp; Contact Details (دکان معلومات و پتہ)</h2>
+            <div style="font-size: 0.85rem; color: #666; margin-top: 4px;">Update physical address, Google Maps link, WhatsApp, and email. Changes sync immediately across the whole website.</div>
+          </div>
+        </div>
+
+        <form id="storeSettingsForm" onsubmit="DarbarAdmin.saveStoreSettings(event)">
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">Brand Name (English)</label>
+              <input type="text" id="storeBrandName" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Brand Name (Urdu)</label>
+              <input type="text" id="storeBrandUrdu" class="form-control font-urdu" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Physical Store Address (دکان کا مکمل پتہ)</label>
+            <input type="text" id="storeAddress" class="form-control" placeholder="Murad Khan Rd, Lyari Town, Karachi, Sindh 72500" required>
+            <div class="form-help">This address appears in the footer, contact page, and invoice bills.</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Google Maps URL (گوگل میپس لنک)</label>
+            <input type="url" id="storeMapsUrl" class="form-control" placeholder="https://maps.google.com/maps?q=..." required>
+            <div class="form-help">Clicking the store location link directs customers to this Google Maps pin.</div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">Direct Email (ای میل ایڈریس)</label>
+              <input type="email" id="storeEmail" class="form-control" placeholder="darbar.flavours03@gmail.com" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Display Phone Number (فون نمبر)</label>
+              <input type="text" id="storePhoneDisplay" class="form-control" placeholder="+92 310 2465004" required>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">WhatsApp Number (For Direct Orders)</label>
+              <input type="text" id="storeWhatsapp" class="form-control" placeholder="+923102465004" required>
+              <div class="form-help">Include country code (+92310...)</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Admin Security PIN (ایڈمن لاگ ان پن)</label>
+              <input type="password" id="adminPinCode" class="form-control" placeholder="Default: darbar2026">
+              <div class="form-help">Secures your admin portal on public devices.</div>
+            </div>
+          </div>
+
+          <!-- CLOUD REAL-TIME DATABASE SYNC (HOW EDITS APPLY SITE-WIDE IN SECONDS) -->
+          <div style="background: #FAF8F5; border: 1.5px solid var(--admin-gold); border-radius: 10px; padding: 18px; margin-top: 20px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+              <strong style="color: var(--admin-gold-dark); font-size: 0.98rem;">
+                <i class="fa-solid fa-cloud-bolt"></i> Google Firebase / Cloud Realtime Sync (فوری کلاؤڈ کنکشن)
+              </strong>
+              <span class="status-badge status-delivered" id="cloudStatusBadge">Instant Local Active</span>
+            </div>
+            <p style="font-size: 0.84rem; color: #555; line-height: 1.6; margin-bottom: 12px;">
+              جب دکاندار موبائل سے ریٹ یا پروڈکٹ تبدیل کرے تو انٹرنیٹ پر تمام کسٹمرز کو سیکنڈوں میں بغیر ری ڈپلائے کیے تبدیلی دکھانے کے لیے یہاں <strong>Google Firebase Realtime Database</strong> کا اینڈ پوائنٹ درج کریں۔
+            </p>
+            <div style="background: #FFF; border: 1px dashed var(--admin-gold); border-radius: 6px; padding: 10px 14px; margin-bottom: 14px; font-size: 0.8rem; color: #444; line-height: 1.7;">
+              <strong>💡 فائر بیس کا آسان ترین طریقہ (30 سیکنڈ سیٹ اپ):</strong><br>
+              1. <code>console.firebase.google.com</code> پر مفت پراجیکٹ بنائیں۔<br>
+              2. <strong>Build &gt; Realtime Database</strong> منتخب کریں اور لوکیشن منتخب کر کے Create کریں۔<br>
+              3. <strong>Rules</strong> میں جا کر <code>&quot;.read&quot;: true, &quot;.write&quot;: true</code> سیٹ کر کے Publish کر دیں۔<br>
+              4. ڈیٹا بیس کا URL کاپی کریں اور آخر میں <code>/darbar_store.json</code> لگا کر نیچے درج فرمائیں!
+            </div>
+            <div class="form-grid-2">
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label">Firebase Database REST URL (یا JSONBin URL)</label>
+                <input type="url" id="cloudSyncUrl" class="form-control" placeholder="https://your-project-default-rtdb.firebaseio.com/darbar_store.json">
+              </div>
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label">Firebase Auth Secret / Token (اختیاری)</label>
+                <input type="password" id="cloudApiKey" class="form-control" placeholder="Optional if rules are public">
+              </div>
+            </div>
+            <div style="margin-top: 14px; display: flex; gap: 10px; flex-wrap: wrap;">
+              <button type="button" class="btn-tool btn-tool-secondary" onclick="DarbarAdmin.pushToCloud()" style="font-size: 0.85rem; padding: 7px 16px;">
+                <i class="fa-solid fa-cloud-arrow-up"></i> Test &amp; Push to Firebase Now (ابھی کلاؤڈ پر بھیجیں)
+              </button>
+            </div>
+          </div>
+
+          <div style="margin-top: 24px; display: flex; justify-content: flex-end; gap: 12px;">
+            <button type="submit" class="btn-tool btn-tool-primary" style="padding: 10px 24px; font-size: 0.95rem;">
+              <i class="fa-solid fa-floppy-disk"></i> محفوظ کریں (Save Store Details)
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- TAB 5: INVENTORY & STOCK -->
+    <!-- ============================================================== -->
+    <section id="inventorySection" style="display: none;">
+      <div class="admin-table-card">
+        <div style="overflow-x: auto;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Product &amp; Urdu Name</th>
+                <th>Category</th>
+                <th>Base Price</th>
+                <th>Stock Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="inventoryTableBody">
+              <!-- Populated dynamically by admin.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================== -->
+  <!-- MODAL 1: ADD / EDIT PRODUCT -->
+  <!-- ============================================================== -->
+  <div class="admin-modal-overlay" id="adminProductModal">
+    <div class="admin-modal-box" style="max-width: 820px;">
+      <div class="modal-header-row">
+        <h3 id="productModalTitle" style="margin: 0; font-size: 1.25rem;">
+          <i class="fa-solid fa-pen-to-square" style="color: var(--admin-gold);"></i> Add New Spice Item
+        </h3>
+        <button type="button" class="modal-close-btn" onclick="DarbarAdmin.closeProductModal()">&times;</button>
+      </div>
+
+      <form id="productForm" onsubmit="DarbarAdmin.handleProductFormSubmit(event)">
+        <input type="hidden" id="editProductId">
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label">Item Title (English) *</label>
+            <input type="text" id="productTitleEn" class="form-control" placeholder="e.g. Special Degi Biryani Masala" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Item Title (Urdu) *</label>
+            <input type="text" id="productTitleUr" class="form-control font-urdu" placeholder="مثلاً: اسپیشل دیگی بریانی مصالحہ" required>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label">Category (کیٹیگری) *</label>
+            <select id="productCategory" class="form-control" required>
+              <option value="special-masalay">Cooking Recipes (ریسیپی مکس مصالحے)</option>
+              <option value="fries-masalay">Fries &amp; Snacks (فرائز و چپس سیزننگز)</option>
+              <option value="spice-powders">Pure Powders (خالص پسے مصالحے)</option>
+              <option value="chaat-masalay">Chaat Masalay (شاہی چاٹ مصالحہ جات)</option>
+              <option value="sauces">Sauces &amp; Mayos (اسپیشل ساسز اور مایو)</option>
+              <option value="deals">Mega Saver Deals (شاہی بچت پیکجز)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Promotional Badge (اختیاری بیج)</label>
+            <input type="text" id="productBadge" class="form-control" placeholder="Top Seller / Hot / New / 20% Off">
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label">Base Rate (Rs.) *</label>
+            <input type="number" id="productDefaultPrice" class="form-control" placeholder="220" min="1" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Original / Cut Price (Rs.)</label>
+            <input type="number" id="productOriginalPrice" class="form-control" placeholder="260" min="1">
+          </div>
+        </div>
+
+        <div style="background: #FAF8F5; border: 1px solid #ECE7DE; border-radius: 8px; padding: 14px; margin-bottom: 16px;">
+          <label class="form-label" style="margin-bottom: 8px;">Weight Variations &amp; Custom Rates (وزن اور ریٹ کی اقسام)</label>
+          <div class="form-grid-4">
+            <div>
+              <span style="font-size: 0.78rem; font-weight: 700; color: #555;">100g Pouch Rate (Rs.)</span>
+              <input type="number" id="weightRate100" class="form-control" placeholder="220">
+            </div>
+            <div>
+              <span style="font-size: 0.78rem; font-weight: 700; color: #555;">250g Jar Rate (Rs.)</span>
+              <input type="number" id="weightRate250" class="form-control" placeholder="500">
+            </div>
+            <div>
+              <span style="font-size: 0.78rem; font-weight: 700; color: #555;">500g Commercial (Rs.)</span>
+              <input type="number" id="weightRate500" class="form-control" placeholder="950">
+            </div>
+            <div>
+              <span style="font-size: 0.78rem; font-weight: 700; color: #555;">1kg Bulk Pack (Rs.)</span>
+              <input type="number" id="weightRate1000" class="form-control" placeholder="1800">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Product Image (مصالحے کی تصویر)</label>
+          <div style="display: flex; gap: 14px; align-items: center; margin-bottom: 8px;">
+            <div style="width: 80px; height: 80px; border-radius: 8px; border: 1.5px solid var(--admin-gold); overflow: hidden; background: #FAF8F5; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+              <img id="productImagePreview" src="assets/images/logo.png" alt="Preview" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='assets/images/logo.png'">
+            </div>
+            <div style="flex: 1;">
+              <input type="url" id="productImage" class="form-control" placeholder="تصویر کا آن لائن لنک (URL) یہاں درج کریں" oninput="DarbarAdmin.updateImagePreview(this.value)" required>
+              <div style="margin-top: 6px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                <label class="btn-tool btn-tool-secondary" style="font-size: 0.78rem; padding: 4px 10px; cursor: pointer; margin-bottom: 0;">
+                  <i class="fa-solid fa-cloud-arrow-up"></i> ڈیوائس / گیلری سے اپلوڈ کریں
+                  <input type="file" id="productImageFileInput" accept="image/*" style="display: none;" onchange="DarbarAdmin.handleImageFileUpload(event)">
+                </label>
+                <span id="uploadStatusText" style="font-size: 0.75rem; color: #777;">(JPG, PNG, WebP)</span>
+              </div>
+            </div>
+          </div>
+          <div class="preset-images-pills" style="flex-wrap: wrap;">
+            <span style="font-size: 0.75rem; color: #777; align-self: center;">فوری ریڈی میڈ تصاویر:</span>
+            <button type="button" class="preset-img-pill" onclick="DarbarAdmin.setPresetImage('biryani')">Biryani</button>
+            <button type="button" class="preset-img-pill" onclick="DarbarAdmin.setPresetImage('qorma')">Qorma</button>
+            <button type="button" class="preset-img-pill" onclick="DarbarAdmin.setPresetImage('karahi')">Karahi</button>
+            <button type="button" class="preset-img-pill" onclick="DarbarAdmin.setPresetImage('nehari')">Nehari</button>
+            <button type="button" class="preset-img-pill" onclick="DarbarAdmin.setPresetImage('haleem')">Haleem</button>
+            <button type="button" class="preset-img-pill" onclick="DarbarAdmin.setPresetImage('tikka')">BBQ Tikka</button>
+            <button type="button" class="preset-img-pill" onclick="DarbarAdmin.setPresetImage('broast')">Broast</button>
+            <button type="button" class="preset-img-pill" onclick="DarbarAdmin.setPresetImage('fish')">Fish Fry</button>
+            <button type="button" class="preset-img-pill" onclick="DarbarAdmin.setPresetImage('haldi')">Turmeric / Haldi</button>
+            <button type="button" class="preset-img-pill" onclick="DarbarAdmin.setPresetImage('mirch')">Lal Mirch</button>
+            <button type="button" class="preset-img-pill" onclick="DarbarAdmin.setPresetImage('chaat')">Chaat Masala</button>
+            <button type="button" class="preset-img-pill" onclick="DarbarAdmin.setPresetImage('fries')">Peri Fries</button>
+            <button type="button" class="preset-img-pill" onclick="DarbarAdmin.setPresetImage('sauces')">Sauces</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Product Description / Recipe Details (تفصیلات)</label>
+          <textarea id="productShortDesc" class="form-control" rows="3" placeholder="مصالحے کی تفصیل، خصوصیات اور استعمال کا طریقہ لکھیں۔"></textarea>
+        </div>
+
+        <div class="form-grid-2" style="margin-top: 14px;">
+          <label style="display: flex; align-items: center; gap: 8px; font-weight: 600; cursor: pointer;">
+            <input type="checkbox" id="productInStock" checked style="width: 18px; height: 18px;">
+            <span>In Stock (دستیاب ہے)</span>
+          </label>
+          <label style="display: flex; align-items: center; gap: 8px; font-weight: 600; cursor: pointer;">
+            <input type="checkbox" id="productIsFeatured" checked style="width: 18px; height: 18px;">
+            <span>Show on Home Page (ہوم پیج پر دکھائیں)</span>
+          </label>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px; border-top: 1px solid #ECE7DE; padding-top: 16px;">
+          <button type="button" class="btn-tool btn-tool-secondary" onclick="DarbarAdmin.closeProductModal()">Cancel</button>
+          <button type="submit" class="btn-tool btn-tool-primary" style="padding: 10px 24px;">
+            <i class="fa-solid fa-floppy-disk"></i> Save Spice Item (محفوظ کریں)
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- MODAL 2: ADD / EDIT CUSTOMER REVIEW -->
+  <!-- ============================================================== -->
+  <div class="admin-modal-overlay" id="adminReviewModal">
+    <div class="admin-modal-box" style="max-width: 580px;">
+      <div class="modal-header-row">
+        <h3 id="reviewModalTitle" style="margin: 0; font-size: 1.25rem;">
+          <i class="fa-solid fa-comment-dots" style="color: var(--admin-gold);"></i> Add Real Customer Review
+        </h3>
+        <button type="button" class="modal-close-btn" onclick="DarbarAdmin.closeReviewModal()">&times;</button>
+      </div>
+
+      <form id="reviewForm" onsubmit="DarbarAdmin.handleReviewFormSubmit(event)">
+        <input type="hidden" id="editReviewId">
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label">Customer Name (گاہک کا نام) *</label>
+            <input type="text" id="reviewAuthor" class="form-control" placeholder="e.g. فاطمہ بیگم / Tariq Mehmood" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">City / Location (شہر) *</label>
+            <input type="text" id="reviewCity" class="form-control" placeholder="e.g. کراچی، پاکستان" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Rating (ستارے) *</label>
+          <select id="reviewRating" class="form-control" required>
+            <option value="5">⭐⭐⭐⭐⭐ (5 Stars - بہترین و لاجواب)</option>
+            <option value="4">⭐⭐⭐⭐ (4 Stars - بہت اچھا)</option>
+            <option value="3">⭐⭐⭐ (3 Stars - مناسب)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Customer Review / Quote (گاہک کا تاثر) *</label>
+          <textarea id="reviewText" class="form-control font-urdu" rows="4" placeholder="گاہک کی اصل رائے یہاں درج کریں (مثلاً: دربار کی اپنی چکی کا پسا ہوا مصالحہ بہت خوشبودار اور خالص ہے...)" required></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; border-top: 1px solid #ECE7DE; padding-top: 14px;">
+          <button type="button" class="btn-tool btn-tool-secondary" onclick="DarbarAdmin.closeReviewModal()">Cancel</button>
+          <button type="submit" class="btn-tool btn-tool-primary" style="padding: 10px 22px;">
+            <i class="fa-solid fa-floppy-disk"></i> Save Review (محفوظ کریں)
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- MODAL 3: PRINTABLE INVOICE -->
+  <!-- ============================================================== -->
+  <div class="admin-modal-overlay" id="adminInvoiceModal">
+    <div class="admin-modal-box" id="invoiceModalContent">
+      <!-- Populated dynamically by admin.js -->
+    </div>
+  </div>
+
+  </div>
+  <!-- END AUTHENTICATED DASHBOARD WRAPPER -->
+
+  <!-- SCRIPTS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="assets/js/products-data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+# Robots.txt for Darbar Flavors Spices
+# https://darbarflavors.com
+
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /checkout.html
+Disallow: /order-success.html
+
+Sitemap: https://darbarflavors.com/sitemap.xml

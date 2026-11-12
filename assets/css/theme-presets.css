@@ -1,0 +1,566 @@
+/* ==========================================================================
+   DARBAR FLAVORS SPICES - 10 COMPREHENSIVE LUXURY THEME PRESETS
+   Transforms the ENTIRE website from top to bottom (Atmosphere, Gradients, Cards, Header, Footer)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   THEME 1: ROYAL IMPERIAL GOLD (شاہی شاہانہ گولڈ - کلاسیک مغل دربار)
+   -------------------------------------------------------------------------- */
+:root, [data-theme="1"] {
+  --gold-primary: #C5A059;
+  --gold-light: #F7E7B4;
+  --gold-dark: #9E7D3B;
+  --gold-metallic: linear-gradient(135deg, #FFE8A3 0%, #D4AF37 35%, #9E7D3B 75%, #F7E7B4 100%);
+  --gold-glow: 0 4px 24px rgba(197, 160, 89, 0.45);
+  --border-gold-subtle: rgba(197, 160, 89, 0.4);
+  --spice-red: #B22222;
+  --spice-red-dark: #8B0000;
+
+  /* Total Layout Surfaces */
+  --theme-announcement-bg: #0A0A0A;
+  --theme-header-bg: #101010;
+  --theme-nav-bg: #161616;
+  --theme-hero-bg: radial-gradient(circle at 50% 30%, #261A08 0%, #0E0E0E 75%);
+  --theme-ribbon-bg: #16140F;
+  --theme-canvas-bg: #F8F6F2;
+  --theme-card-bg: #FFFFFF;
+  --theme-card-border: #E8E4DC;
+  --theme-card-text: #181818;
+  --theme-card-shadow: 0 12px 30px rgba(197, 160, 89, 0.22);
+  --theme-deals-bg: linear-gradient(135deg, #1A1408 0%, #0E0E0E 100%);
+  --theme-footer-bg: #0B0B0B;
+  --theme-btn-color: #0E0E0E;
+}
+
+/* --------------------------------------------------------------------------
+   THEME 2: DEGI RUBY RED & GOLD (شاہی دیگی روبی لال - کشمیری مرچ و روبی)
+   -------------------------------------------------------------------------- */
+[data-theme="2"] {
+  --gold-primary: #E74C3C;
+  --gold-light: #FFD5D5;
+  --gold-dark: #962D22;
+  --gold-metallic: linear-gradient(135deg, #FFA07A 0%, #E74C3C 35%, #962D22 75%, #FFD5D5 100%);
+  --gold-glow: 0 4px 24px rgba(231, 76, 60, 0.5);
+  --border-gold-subtle: rgba(231, 76, 60, 0.45);
+  --spice-red: #C0392B;
+  --spice-red-dark: #78281F;
+
+  /* Total Layout Surfaces */
+  --theme-announcement-bg: #1A0505;
+  --theme-header-bg: #180606;
+  --theme-nav-bg: #200808;
+  --theme-hero-bg: radial-gradient(circle at 50% 30%, #3B0D0D 0%, #0F0404 80%);
+  --theme-ribbon-bg: #1F0909;
+  --theme-canvas-bg: #FFF8F8;
+  --theme-card-bg: #FFFFFF;
+  --theme-card-border: #F3D5D5;
+  --theme-card-text: #200A0A;
+  --theme-card-shadow: 0 12px 30px rgba(231, 76, 60, 0.22);
+  --theme-deals-bg: linear-gradient(135deg, #2D0808 0%, #110303 100%);
+  --theme-footer-bg: #0E0303;
+  --theme-btn-color: #FFFFFF;
+}
+
+/* --------------------------------------------------------------------------
+   THEME 3: EMERALD MUGHAL GREEN (شاہی مغل زمردی سبز - سبز الائچی و شالیمار)
+   -------------------------------------------------------------------------- */
+[data-theme="3"] {
+  --gold-primary: #27AE60;
+  --gold-light: #D4EFDF;
+  --gold-dark: #145A32;
+  --gold-metallic: linear-gradient(135deg, #82E0AA 0%, #27AE60 35%, #145A32 75%, #D4EFDF 100%);
+  --gold-glow: 0 4px 24px rgba(39, 174, 96, 0.5);
+  --border-gold-subtle: rgba(39, 174, 96, 0.45);
+  --spice-red: #D35400;
+  --spice-red-dark: #873600;
+
+  /* Total Layout Surfaces */
+  --theme-announcement-bg: #06170D;
+  --theme-header-bg: #081D11;
+  --theme-nav-bg: #0D2617;
+  --theme-hero-bg: radial-gradient(circle at 50% 30%, #0C381E 0%, #05140B 80%);
+  --theme-ribbon-bg: #0C2617;
+  --theme-canvas-bg: #F4FAF6;
+  --theme-card-bg: #FFFFFF;
+  --theme-card-border: #D5EBDC;
+  --theme-card-text: #0C2114;
+  --theme-card-shadow: 0 12px 30px rgba(39, 174, 96, 0.22);
+  --theme-deals-bg: linear-gradient(135deg, #0C301B 0%, #05130A 100%);
+  --theme-footer-bg: #05130A;
+  --theme-btn-color: #FFFFFF;
+}
+
+/* --------------------------------------------------------------------------
+   THEME 4: ROYAL SAPPHIRE BLUE & GOLD (شاہی نیلم بلیو و سنہری)
+   -------------------------------------------------------------------------- */
+[data-theme="4"] {
+  --gold-primary: #2980B9;
+  --gold-light: #D4E6F1;
+  --gold-dark: #154360;
+  --gold-metallic: linear-gradient(135deg, #85C1E9 0%, #2980B9 35%, #154360 75%, #D4E6F1 100%);
+  --gold-glow: 0 4px 24px rgba(41, 128, 185, 0.5);
+  --border-gold-subtle: rgba(41, 128, 185, 0.45);
+  --spice-red: #E74C3C;
+  --spice-red-dark: #922B21;
+
+  /* Total Layout Surfaces */
+  --theme-announcement-bg: #06121F;
+  --theme-header-bg: #091A2C;
+  --theme-nav-bg: #0D233B;
+  --theme-hero-bg: radial-gradient(circle at 50% 30%, #0E365E 0%, #050E1A 80%);
+  --theme-ribbon-bg: #0B2138;
+  --theme-canvas-bg: #F4F8FC;
+  --theme-card-bg: #FFFFFF;
+  --theme-card-border: #D3E4F3;
+  --theme-card-text: #081B2E;
+  --theme-card-shadow: 0 12px 30px rgba(41, 128, 185, 0.22);
+  --theme-deals-bg: linear-gradient(135deg, #0B294A 0%, #04101E 100%);
+  --theme-footer-bg: #050E1A;
+  --theme-btn-color: #FFFFFF;
+}
+
+/* --------------------------------------------------------------------------
+   THEME 5: SAFFRON AMBER & CINNAMON (زعفرانی عنبر و دارچینی)
+   -------------------------------------------------------------------------- */
+[data-theme="5"] {
+  --gold-primary: #E67E22;
+  --gold-light: #FDEBD0;
+  --gold-dark: #873600;
+  --gold-metallic: linear-gradient(135deg, #F8C471 0%, #E67E22 35%, #873600 75%, #FDEBD0 100%);
+  --gold-glow: 0 4px 24px rgba(230, 126, 34, 0.5);
+  --border-gold-subtle: rgba(230, 126, 34, 0.45);
+  --spice-red: #C0392B;
+  --spice-red-dark: #78281F;
+
+  /* Total Layout Surfaces */
+  --theme-announcement-bg: #170A02;
+  --theme-header-bg: #1F1005;
+  --theme-nav-bg: #291508;
+  --theme-hero-bg: radial-gradient(circle at 50% 30%, #4D2608 0%, #120902 80%);
+  --theme-ribbon-bg: #261407;
+  --theme-canvas-bg: #FDF8F2;
+  --theme-card-bg: #FFFFFF;
+  --theme-card-border: #F7E0CB;
+  --theme-card-text: #210E03;
+  --theme-card-shadow: 0 12px 30px rgba(230, 126, 34, 0.22);
+  --theme-deals-bg: linear-gradient(135deg, #381A05 0%, #120802 100%);
+  --theme-footer-bg: #0F0702;
+  --theme-btn-color: #FFFFFF;
+}
+
+/* --------------------------------------------------------------------------
+   THEME 6: MAJESTIC ROYAL VELVET PURPLE (شاہی مغل جامنی و طلائی)
+   -------------------------------------------------------------------------- */
+[data-theme="6"] {
+  --gold-primary: #8E44AD;
+  --gold-light: #EBDEF0;
+  --gold-dark: #512E5F;
+  --gold-metallic: linear-gradient(135deg, #BB8FCE 0%, #8E44AD 35%, #512E5F 75%, #EBDEF0 100%);
+  --gold-glow: 0 4px 24px rgba(142, 68, 173, 0.5);
+  --border-gold-subtle: rgba(142, 68, 173, 0.45);
+  --spice-red: #C0392B;
+  --spice-red-dark: #78281F;
+
+  /* Total Layout Surfaces */
+  --theme-announcement-bg: #12051A;
+  --theme-header-bg: #190924;
+  --theme-nav-bg: #220D30;
+  --theme-hero-bg: radial-gradient(circle at 50% 30%, #3B1454 0%, #0E0314 80%);
+  --theme-ribbon-bg: #1F0B2E;
+  --theme-canvas-bg: #F9F4FC;
+  --theme-card-bg: #FFFFFF;
+  --theme-card-border: #E8D3F3;
+  --theme-card-text: #1C072A;
+  --theme-card-shadow: 0 12px 30px rgba(142, 68, 173, 0.22);
+  --theme-deals-bg: linear-gradient(135deg, #2C0E40 0%, #0E0314 100%);
+  --theme-footer-bg: #0D0314;
+  --theme-btn-color: #FFFFFF;
+}
+
+/* --------------------------------------------------------------------------
+   THEME 7: ROSE GOLD & CHAMPAGNE PEARL (گلاب گولڈ و شیمپین موتی)
+   -------------------------------------------------------------------------- */
+[data-theme="7"] {
+  --gold-primary: #D98880;
+  --gold-light: #FDEDEC;
+  --gold-dark: #78281F;
+  --gold-metallic: linear-gradient(135deg, #FADBD8 0%, #D98880 35%, #78281F 75%, #FDEDEC 100%);
+  --gold-glow: 0 4px 24px rgba(217, 136, 128, 0.5);
+  --border-gold-subtle: rgba(217, 136, 128, 0.45);
+  --spice-red: #A93226;
+  --spice-red-dark: #78281F;
+
+  /* Total Layout Surfaces */
+  --theme-announcement-bg: #190A0E;
+  --theme-header-bg: #210F14;
+  --theme-nav-bg: #2B141B;
+  --theme-hero-bg: radial-gradient(circle at 50% 30%, #47212B 0%, #12070A 80%);
+  --theme-ribbon-bg: #261218;
+  --theme-canvas-bg: #FDF7F8;
+  --theme-card-bg: #FFFFFF;
+  --theme-card-border: #F5D3D7;
+  --theme-card-text: #240C12;
+  --theme-card-shadow: 0 12px 30px rgba(217, 136, 128, 0.22);
+  --theme-deals-bg: linear-gradient(135deg, #36171F 0%, #130609 100%);
+  --theme-footer-bg: #0F0508;
+  --theme-btn-color: #FFFFFF;
+}
+
+/* --------------------------------------------------------------------------
+   THEME 8: ULTRA 24K GOLD & OBSIDIAN (بلیک ڈائمنڈ و الٹرا 24K گولڈ - فل ڈارک موڈ)
+   -------------------------------------------------------------------------- */
+[data-theme="8"] {
+  --gold-primary: #FFD700;
+  --gold-light: #FFFDE7;
+  --gold-dark: #B8860B;
+  --gold-metallic: linear-gradient(135deg, #FFF9C4 0%, #FFD700 35%, #B8860B 75%, #FFF 100%);
+  --gold-glow: 0 4px 28px rgba(255, 215, 0, 0.6);
+  --border-gold-subtle: rgba(255, 215, 0, 0.5);
+  --spice-red: #E53935;
+  --spice-red-dark: #B71C1C;
+
+  /* Total Layout Surfaces (True Luxury Dark Mode) */
+  --theme-announcement-bg: #000000;
+  --theme-header-bg: #080808;
+  --theme-nav-bg: #0F0F0F;
+  --theme-hero-bg: radial-gradient(circle at 50% 30%, #302600 0%, #000000 80%);
+  --theme-ribbon-bg: #0A0A0A;
+  --theme-canvas-bg: #0E0E0E; /* Full Dark Mode Canvas! */
+  --theme-card-bg: #171717;   /* Sleek Dark Cards! */
+  --theme-card-border: #2A240E;
+  --theme-card-text: #F5F5F5;
+  --theme-card-shadow: 0 14px 35px rgba(255, 215, 0, 0.25);
+  --theme-deals-bg: linear-gradient(135deg, #241D00 0%, #000000 100%);
+  --theme-footer-bg: #000000;
+  --theme-btn-color: #000000;
+}
+
+/* Specific Dark Mode Overrides for Theme 8 */
+[data-theme="8"] .product-title,
+[data-theme="8"] .product-title a,
+[data-theme="8"] .category-name,
+[data-theme="8"] .section-title,
+[data-theme="8"] .recipe-title,
+[data-theme="8"] .why-us-card h4 {
+  color: #FFFFFF !important;
+}
+
+[data-theme="8"] .product-urdu-title,
+[data-theme="8"] .category-urdu,
+[data-theme="8"] .recipe-card p,
+[data-theme="8"] .why-us-card p {
+  color: #D6C27A !important;
+}
+
+[data-theme="8"] .why-us-card,
+[data-theme="8"] .recipe-card,
+[data-theme="8"] .testimonial-card {
+  background: #171717 !important;
+  border-color: #2E2712 !important;
+}
+
+[data-theme="8"] .weight-pill {
+  background: #242424 !important;
+  color: #D4AF37 !important;
+  border-color: #403614 !important;
+}
+
+[data-theme="8"] .weight-pill.active {
+  background: #FFD700 !important;
+  color: #000 !important;
+}
+
+/* --------------------------------------------------------------------------
+   THEME 9: ANTIQUE COPPER BRONZE & PAPRIKA (قدیم تانبا برونز و دیگی پیپریکا)
+   -------------------------------------------------------------------------- */
+[data-theme="9"] {
+  --gold-primary: #DC7633;
+  --gold-light: #FBEEE6;
+  --gold-dark: #6E2C00;
+  --gold-metallic: linear-gradient(135deg, #F5CBA7 0%, #DC7633 35%, #6E2C00 75%, #FBEEE6 100%);
+  --gold-glow: 0 4px 24px rgba(220, 118, 51, 0.5);
+  --border-gold-subtle: rgba(220, 118, 51, 0.45);
+  --spice-red: #A93226;
+  --spice-red-dark: #641E16;
+
+  /* Total Layout Surfaces */
+  --theme-announcement-bg: #170903;
+  --theme-header-bg: #1F0D05;
+  --theme-nav-bg: #291207;
+  --theme-hero-bg: radial-gradient(circle at 50% 30%, #4A1F0B 0%, #120602 80%);
+  --theme-ribbon-bg: #240F06;
+  --theme-canvas-bg: #FCF7F3;
+  --theme-card-bg: #FFFFFF;
+  --theme-card-border: #F5DEC9;
+  --theme-card-text: #210D03;
+  --theme-card-shadow: 0 12px 30px rgba(220, 118, 51, 0.22);
+  --theme-deals-bg: linear-gradient(135deg, #361507 0%, #120502 100%);
+  --theme-footer-bg: #0F0401;
+  --theme-btn-color: #FFFFFF;
+}
+
+/* --------------------------------------------------------------------------
+   THEME 10: PERSIAN FEROZI TURQUOISE & GOLD (شاہی ایرانی فیروزی و سنہری)
+   -------------------------------------------------------------------------- */
+[data-theme="10"] {
+  --gold-primary: #16A085;
+  --gold-light: #E8F8F5;
+  --gold-dark: #0E6251;
+  --gold-metallic: linear-gradient(135deg, #A3E4D7 0%, #16A085 35%, #0E6251 75%, #E8F8F5 100%);
+  --gold-glow: 0 4px 24px rgba(22, 160, 133, 0.5);
+  --border-gold-subtle: rgba(22, 160, 133, 0.45);
+  --spice-red: #E74C3C;
+  --spice-red-dark: #922B21;
+
+  /* Total Layout Surfaces */
+  --theme-announcement-bg: #041412;
+  --theme-header-bg: #061B17;
+  --theme-nav-bg: #0A241F;
+  --theme-hero-bg: radial-gradient(circle at 50% 30%, #0C3E34 0%, #03120F 80%);
+  --theme-ribbon-bg: #092621;
+  --theme-canvas-bg: #F2FAF8;
+  --theme-card-bg: #FFFFFF;
+  --theme-card-border: #D1EFE9;
+  --theme-card-text: #051A15;
+  --theme-card-shadow: 0 12px 30px rgba(22, 160, 133, 0.22);
+  --theme-deals-bg: linear-gradient(135deg, #09332C 0%, #031411 100%);
+  --theme-footer-bg: #03120F;
+  --theme-btn-color: #FFFFFF;
+}
+
+/* --------------------------------------------------------------------------
+   THEME 11: ROYAL MAROON, IMPERIAL GOLD & CRISP WHITE (شاہی مہرون، گولڈن اور سفید)
+   -------------------------------------------------------------------------- */
+[data-theme="11"], [data-theme="maroon-gold-white"] {
+  --gold-primary: #D4AF37;
+  --gold-light: #FFF2C6;
+  --gold-dark: #9E7D3B;
+  --gold-metallic: linear-gradient(135deg, #FFE8A3 0%, #D4AF37 40%, #A67C2E 80%, #FFF2C6 100%);
+  --gold-glow: 0 4px 25px rgba(212, 175, 55, 0.45);
+  --border-gold-subtle: rgba(212, 175, 55, 0.45);
+  --spice-red: #7A0C16;
+  --spice-red-dark: #52050D;
+
+  /* Total Layout Surfaces: Rich Royal Maroon, Warm Alabaster White & Imperial Gold */
+  --theme-announcement-bg: #42060C;
+  --theme-header-bg: #570A12;
+  --theme-nav-bg: #3B0409;
+  --theme-hero-bg: radial-gradient(circle at 50% 30%, #6E0D17 0%, #300307 80%);
+  --theme-ribbon-bg: #570A12;
+  --theme-canvas-bg: #FCFAF7;
+  --theme-card-bg: #FFFFFF;
+  --theme-card-border: #E8DFD3;
+  --theme-card-text: #1C1917;
+  --theme-card-shadow: 0 12px 30px rgba(110, 13, 23, 0.16);
+  --theme-deals-bg: linear-gradient(135deg, #570A12 0%, #290306 100%);
+  --theme-footer-bg: #290306;
+  --theme-btn-color: #FFFFFF;
+}
+
+/* ==========================================================================
+   GLOBAL COMPONENT BINDINGS (TRANSFORMS THE ENTIRE WEBSITE LIVE)
+   ========================================================================== */
+
+/* 1. Header & Navigation */
+.announcement-bar {
+  background-color: var(--theme-announcement-bg) !important;
+  border-bottom: 1px solid var(--border-gold-subtle) !important;
+  transition: background-color 0.4s ease, border-color 0.4s ease;
+}
+
+.site-header {
+  background-color: var(--theme-header-bg) !important;
+  border-bottom: 1.5px solid var(--gold-primary) !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6), var(--gold-glow) !important;
+  transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.main-nav {
+  background: var(--theme-nav-bg) !important;
+  border-top: 1px solid var(--border-gold-subtle) !important;
+  transition: background-color 0.4s ease;
+}
+
+.search-input-wrap {
+  border-color: var(--gold-primary) !important;
+}
+
+.search-input-wrap:focus-within {
+  box-shadow: var(--gold-glow) !important;
+}
+
+.search-btn {
+  background: var(--gold-metallic) !important;
+  color: var(--theme-btn-color) !important;
+}
+
+/* 2. Hero Section */
+.hero-fullbleed-section {
+  background: var(--theme-hero-bg) !important;
+  transition: background 0.4s ease;
+}
+
+.hero-corner-to-corner-video-wrap {
+  border-top: 1.5px solid var(--border-gold-subtle) !important;
+  border-bottom: 1.5px solid var(--border-gold-subtle) !important;
+}
+
+.hero-brand-tag {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid var(--gold-primary) !important;
+  color: var(--gold-light) !important;
+}
+
+/* 3. Features Ribbon */
+.features-ribbon {
+  background: var(--theme-ribbon-bg) !important;
+  border-bottom: 1px solid var(--border-gold-subtle) !important;
+  transition: background-color 0.4s ease;
+}
+
+.feature-box i {
+  color: var(--gold-primary) !important;
+}
+
+/* 4. Body Canvas & Sections */
+body {
+  background-color: var(--theme-canvas-bg) !important;
+  transition: background-color 0.4s ease;
+}
+
+.section-title {
+  color: var(--theme-card-text);
+}
+
+.section-title span, .section-title strong {
+  background: var(--gold-metallic) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+/* 5. Product & Category Cards */
+.product-card {
+  background: var(--theme-card-bg) !important;
+  border: 1.5px solid var(--theme-card-border) !important;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.4s ease;
+}
+
+.product-card:hover {
+  border-color: var(--gold-primary) !important;
+  box-shadow: var(--theme-card-shadow) !important;
+  transform: translateY(-4px);
+}
+
+.category-card {
+  background: var(--theme-card-bg) !important;
+  border: 1.5px solid var(--theme-card-border) !important;
+  transition: all 0.3s ease;
+}
+
+.category-card:hover {
+  border-color: var(--gold-primary) !important;
+  box-shadow: var(--theme-card-shadow) !important;
+  transform: translateY(-4px);
+}
+
+.current-price {
+  color: var(--gold-primary) !important;
+}
+
+.badge-deal, .badge-bestseller, .badge-royal {
+  background: var(--gold-metallic) !important;
+  color: var(--theme-btn-color) !important;
+}
+
+/* 6. Buttons */
+.btn-primary {
+  background: var(--gold-metallic) !important;
+  color: var(--theme-btn-color) !important;
+  box-shadow: var(--gold-glow) !important;
+  transition: all 0.25s ease;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.12);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), var(--gold-glow) !important;
+}
+
+.btn-secondary {
+  border-color: var(--gold-primary) !important;
+  color: var(--gold-light) !important;
+}
+
+.btn-secondary:hover {
+  background: var(--border-gold-subtle) !important;
+}
+
+/* 7. Deals Promo Section */
+.deals-promo-section {
+  background: var(--theme-deals-bg) !important;
+  border-top: 1.5px solid var(--gold-primary) !important;
+  border-bottom: 1.5px solid var(--gold-primary) !important;
+  transition: background 0.4s ease;
+}
+
+.countdown-unit {
+  background: rgba(0, 0, 0, 0.4) !important;
+  border: 1px solid var(--gold-primary) !important;
+  color: var(--gold-light) !important;
+}
+
+/* 8. Footer & Mobile Bar */
+.site-footer {
+  background: var(--theme-footer-bg) !important;
+  border-top: 3.5px solid var(--gold-primary) !important;
+  transition: background-color 0.4s ease, border-color 0.4s ease;
+}
+
+.footer-top h4 {
+  color: var(--gold-light) !important;
+}
+
+.footer-top h4::after {
+  background: var(--gold-metallic) !important;
+}
+
+.footer-contact-item i {
+  color: var(--gold-primary) !important;
+}
+
+.social-icon-btn {
+  border-color: var(--border-gold-subtle) !important;
+  color: var(--gold-light) !important;
+}
+
+.social-icon-btn:hover {
+  background: var(--gold-metallic) !important;
+  color: var(--theme-btn-color) !important;
+  border-color: var(--gold-primary) !important;
+}
+
+.mobile-bottom-bar {
+  background: var(--theme-header-bg) !important;
+  border-top: 1.5px solid var(--gold-primary) !important;
+}
+
+.mobile-nav-drawer {
+  background: var(--theme-header-bg) !important;
+  border-right: 2.5px solid var(--gold-primary) !important;
+}
+
+.mobile-drawer-header, .mobile-drawer-footer {
+  background: var(--theme-announcement-bg) !important;
+  border-color: var(--border-gold-subtle) !important;
+}
+
+/* Floating Action Pills */
+.theme-switcher-pill {
+  border-color: var(--gold-primary) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8), var(--gold-glow) !important;
+}
+
+.theme-pill-icon {
+  background: var(--gold-metallic) !important;
+  color: var(--theme-btn-color) !important;
+}
