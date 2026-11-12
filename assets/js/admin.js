@@ -1363,90 +1363,101 @@ const DarbarAdmin = {
     const grid = document.getElementById('adminCategoriesGrid');
     if (!grid) return;
 
-    if (typeof DarbarData === 'undefined' || typeof DarbarData.getCategories !== 'function') {
-      grid.innerHTML = '<p style="color: #888; padding: 20px;">کیٹیگریز لوڈ ہو رہی ہیں...</p>';
-      return;
-    }
+    try {
+      let categories = [];
+      if (typeof DarbarData !== 'undefined' && typeof DarbarData.getCategories === 'function') {
+        categories = DarbarData.getCategories();
+      }
+      if (!Array.isArray(categories) || categories.length === 0) {
+        if (typeof DarbarData !== 'undefined' && typeof DarbarData.getDefaultCategories === 'function') {
+          categories = DarbarData.getDefaultCategories();
+        }
+      }
 
-    let categories = DarbarData.getCategories();
-    if (this.categorySearchQuery) {
-      const q = this.categorySearchQuery.toLowerCase();
-      categories = categories.filter(c => 
-        (c.name && c.name.toLowerCase().includes(q)) ||
-        (c.urduName && c.urduName.includes(q)) ||
-        (c.id && c.id.toLowerCase().includes(q)) ||
-        (c.desc && c.desc.toLowerCase().includes(q))
-      );
-    }
+      if (this.categorySearchQuery) {
+        const q = this.categorySearchQuery.toLowerCase();
+        categories = categories.filter(c => 
+          (c.name && c.name.toLowerCase().includes(q)) ||
+          (c.urduName && c.urduName.includes(q)) ||
+          (c.id && c.id.toLowerCase().includes(q)) ||
+          (c.desc && c.desc.toLowerCase().includes(q))
+        );
+      }
 
-    if (!categories || categories.length === 0) {
-      grid.innerHTML = `
-        <div style="grid-column: 1 / -1; text-align: center; padding: 40px 20px; background: #FAF8F5; border: 1.5px dashed #DED8CE; border-radius: 12px;">
-          <i class="fa-solid fa-folder-open" style="font-size: 2.2rem; color: var(--admin-gold); margin-bottom: 10px;"></i>
-          <h4 style="margin: 0; color: var(--admin-text-main);">کوئی کیٹیگری نہیں ملی</h4>
-          <p style="color: #777; font-size: 0.88rem; margin: 6px 0 16px;">اوپر دیئے گئے بٹن سے نئی کیٹیگری شامل کریں۔</p>
-          <button class="btn-tool btn-tool-primary" onclick="DarbarAdmin.openAddCategoryModal()">
-            <i class="fa-solid fa-plus"></i> نئی کیٹیگری بنائیں
-          </button>
-        </div>
-      `;
-      return;
-    }
-
-    grid.innerHTML = categories.map(cat => {
-      const itemCount = DarbarData.getItemCountByCategory(cat.id);
-      const products = DarbarData.getProductsByCategory(cat.id);
-      const previewChips = products.slice(0, 4).map(p => 
-        `<span class="category-item-tag" title="${p.title}">${p.urduTitle || p.title}</span>`
-      ).join('');
-      const moreCount = products.length > 4 ? `<span class="category-item-tag" style="background: #EFEAE2; color: #666;">+${products.length - 4} مزید</span>` : '';
-
-      return `
-      <div class="category-admin-card" id="cat-card-${cat.id}">
-        <div class="category-admin-thumb-wrap">
-          <img src="${cat.image || 'assets/images/logo.png'}" alt="${cat.name}" class="category-admin-thumb" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=500&auto=format&fit=crop&q=80';">
-          <div class="category-admin-badge">
-            <i class="fa-solid fa-boxes-stacked"></i> ${itemCount} Items (مصالحے)
+      if (!categories || categories.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 40px 20px; background: #FAF8F5; border: 1.5px dashed #DED8CE; border-radius: 12px;">
+            <i class="fa-solid fa-folder-open" style="font-size: 2.2rem; color: var(--admin-gold); margin-bottom: 10px;"></i>
+            <h4 style="margin: 0; color: var(--admin-text-main);">کوئی کیٹیگری نہیں ملی</h4>
+            <p style="color: #777; font-size: 0.88rem; margin: 6px 0 16px;">اوپر دیئے گئے بٹن سے نئی کیٹیگری شامل کریں۔</p>
+            <button class="btn-tool btn-tool-primary" onclick="DarbarAdmin.openAddCategoryModal()">
+              <i class="fa-solid fa-plus"></i> نئی کیٹیگری بنائیں
+            </button>
           </div>
-        </div>
+        `;
+        return;
+      }
 
-        <div class="category-admin-body">
-          <div class="category-admin-header">
-            <div>
-              <h4 class="category-admin-title">${cat.name}</h4>
-              <div class="category-admin-urdu font-urdu">${cat.urduName || ''}</div>
-            </div>
-            <code style="background: #FAF8F5; border: 1px solid #E5DFD5; padding: 2px 6px; border-radius: 4px; font-size: 0.72rem; color: #777;">${cat.id}</code>
-          </div>
+      grid.innerHTML = categories.map(cat => {
+        const itemCount = (typeof DarbarData !== 'undefined' && typeof DarbarData.getItemCountByCategory === 'function')
+          ? DarbarData.getItemCountByCategory(cat.id) : 0;
+        const products = (typeof DarbarData !== 'undefined' && typeof DarbarData.getProductsByCategory === 'function')
+          ? DarbarData.getProductsByCategory(cat.id) : [];
+        const previewChips = products.slice(0, 4).map(p => {
+          const safeTitle = (p.title || '').replace(/"/g, '&quot;');
+          return `<span class="category-item-tag" title="${safeTitle}">${p.urduTitle || p.title}</span>`;
+        }).join('');
+        const moreCount = products.length > 4 ? `<span class="category-item-tag" style="background: #EFEAE2; color: #666;">+${products.length - 4} مزید</span>` : '';
 
-          <p class="category-admin-desc font-urdu">${cat.desc || 'خالص و روایتی مصالحہ جات'}</p>
-
-          <div class="category-admin-items-preview">
-            <div style="font-size: 0.75rem; font-weight: 700; color: #666; display: flex; justify-content: space-between;">
-              <span>اس کیٹیگری کے مصالحے:</span>
-              <strong style="color: var(--admin-gold-dark);">${itemCount} کل</strong>
-            </div>
-            <div class="category-admin-items-tags">
-              ${previewChips || '<span style="font-size: 0.74rem; color: #999;">کوئی آئٹم تفویض نہیں</span>'}
-              ${moreCount}
+        return `
+        <div class="category-admin-card" id="cat-card-${cat.id}">
+          <div class="category-admin-thumb-wrap">
+            <img src="${cat.image || 'assets/images/logo.png'}" alt="${cat.name}" class="category-admin-thumb" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=500&auto=format&fit=crop&q=80';">
+            <div class="category-admin-badge">
+              <i class="fa-solid fa-boxes-stacked"></i> ${itemCount} Items (مصالحے)
             </div>
           </div>
 
-          <div class="category-admin-actions">
-            <button type="button" class="btn-tool btn-tool-primary" style="flex: 1; padding: 8px 10px; font-size: 0.8rem;" onclick="DarbarAdmin.openEditCategoryModal('${cat.id}')">
-              <i class="fa-solid fa-pen-to-square"></i> ترمیم و تصویر
-            </button>
-            <button type="button" class="btn-tool btn-tool-secondary" style="flex: 1; padding: 8px 10px; font-size: 0.8rem;" onclick="DarbarAdmin.openCategoryItemsModal('${cat.id}')">
-              <i class="fa-solid fa-list-check"></i> آئٹمز سنبھالیں (${itemCount})
-            </button>
-            <button type="button" class="action-btn action-btn-delete" title="کیٹیگری حذف کریں" onclick="DarbarAdmin.deleteCategory('${cat.id}')">
-              <i class="fa-solid fa-trash-can"></i>
-            </button>
+          <div class="category-admin-body">
+            <div class="category-admin-header">
+              <div>
+                <h4 class="category-admin-title">${cat.name}</h4>
+                <div class="category-admin-urdu font-urdu">${cat.urduName || ''}</div>
+              </div>
+              <code style="background: #FAF8F5; border: 1px solid #E5DFD5; padding: 2px 6px; border-radius: 4px; font-size: 0.72rem; color: #777;">${cat.id}</code>
+            </div>
+
+            <p class="category-admin-desc font-urdu">${cat.desc || 'خالص و روایتی مصالحہ جات'}</p>
+
+            <div class="category-admin-items-preview">
+              <div style="font-size: 0.75rem; font-weight: 700; color: #666; display: flex; justify-content: space-between;">
+                <span>اس کیٹیگری کے مصالحے:</span>
+                <strong style="color: var(--admin-gold-dark);">${itemCount} کل</strong>
+              </div>
+              <div class="category-admin-items-tags">
+                ${previewChips || '<span style="font-size: 0.74rem; color: #999;">کوئی آئٹم تفویض نہیں</span>'}
+                ${moreCount}
+              </div>
+            </div>
+
+            <div class="category-admin-actions">
+              <button type="button" class="btn-tool btn-tool-primary" style="flex: 1; padding: 8px 10px; font-size: 0.8rem;" onclick="DarbarAdmin.openEditCategoryModal('${cat.id}')">
+                <i class="fa-solid fa-pen-to-square"></i> ترمیم و تصویر
+              </button>
+              <button type="button" class="btn-tool btn-tool-secondary" style="flex: 1; padding: 8px 10px; font-size: 0.8rem;" onclick="DarbarAdmin.openCategoryItemsModal('${cat.id}')">
+                <i class="fa-solid fa-list-check"></i> آئٹمز سنبھالیں (${itemCount})
+              </button>
+              <button type="button" class="action-btn action-btn-delete" title="کیٹیگری حذف کریں" onclick="DarbarAdmin.deleteCategory('${cat.id}')">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-      `;
-    }).join('');
+        `;
+      }).join('');
+    } catch (err) {
+      console.error('Error in renderCategories:', err);
+    }
   },
 
   filterCategories(query) {
@@ -1721,6 +1732,18 @@ const DarbarAdmin = {
         document.getElementById('reviewsSection').style.display = tab === 'reviews' ? 'block' : 'none';
         document.getElementById('storeSection').style.display = tab === 'store' ? 'block' : 'none';
         document.getElementById('inventorySection').style.display = tab === 'inventory' ? 'block' : 'none';
+
+        if (tab === 'categories') {
+          this.renderCategories();
+        } else if (tab === 'products') {
+          this.renderProductsTable();
+        } else if (tab === 'orders') {
+          this.renderOrdersTable();
+        } else if (tab === 'reviews') {
+          this.renderReviews();
+        } else if (tab === 'inventory') {
+          this.renderInventoryTable();
+        }
       });
     });
 

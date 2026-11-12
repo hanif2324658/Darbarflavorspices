@@ -4514,6 +4514,7 @@ const DarbarData = {
   },
 
   getProductsByCategory(categoryId) {
+    if (!categoryId || categoryId === 'all') return this.getProducts();
     const products = this.getProducts();
     return products.filter(p => p.category === categoryId);
   },

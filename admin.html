@@ -246,7 +246,253 @@
 
       <!-- CATEGORIES GRID -->
       <div id="adminCategoriesGrid" class="admin-categories-grid">
-        <!-- Rendered dynamically by DarbarAdmin.renderCategories() -->
+        <!-- 1. Cooking Recipes -->
+        <div class="category-admin-card" id="cat-card-special-masalay">
+          <div class="category-admin-thumb-wrap">
+            <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500&auto=format&fit=crop&q=80" alt="Cooking Recipes" class="category-admin-thumb">
+            <div class="category-admin-badge"><i class="fa-solid fa-boxes-stacked"></i> 31 Items (مصالحے)</div>
+          </div>
+          <div class="category-admin-body">
+            <div class="category-admin-header">
+              <div>
+                <h4 class="category-admin-title">Cooking Recipes</h4>
+                <div class="category-admin-urdu font-urdu">ریسیپی مکس مصالحے</div>
+              </div>
+              <code style="background: #FAF8F5; border: 1px solid #E5DFD5; padding: 2px 6px; border-radius: 4px; font-size: 0.72rem; color: #777;">special-masalay</code>
+            </div>
+            <p class="category-admin-desc font-urdu">31 اقسام (بریانی، نہاری، کباب)</p>
+            <div class="category-admin-items-preview">
+              <div style="font-size: 0.75rem; font-weight: 700; color: #666; display: flex; justify-content: space-between;">
+                <span>اس کیٹیگری کے مصالحے:</span>
+                <strong style="color: var(--admin-gold-dark);">31 کل</strong>
+              </div>
+              <div class="category-admin-items-tags">
+                <span class="category-item-tag">بمبئی بریانی</span>
+                <span class="category-item-tag">قورمہ مصالحہ</span>
+                <span class="category-item-tag">نہاری مصالحہ</span>
+                <span class="category-item-tag">حلیم مصالحہ</span>
+                <span class="category-item-tag" style="background: #EFEAE2; color: #666;">+27 مزید</span>
+              </div>
+            </div>
+            <div class="category-admin-actions">
+              <button type="button" class="btn-tool btn-tool-primary" style="flex: 1; padding: 8px 10px; font-size: 0.8rem;" onclick="DarbarAdmin.openEditCategoryModal('special-masalay')">
+                <i class="fa-solid fa-pen-to-square"></i> ترمیم و تصویر
+              </button>
+              <button type="button" class="btn-tool btn-tool-secondary" style="flex: 1; padding: 8px 10px; font-size: 0.8rem;" onclick="DarbarAdmin.openCategoryItemsModal('special-masalay')">
+                <i class="fa-solid fa-list-check"></i> آئٹمز سنبھالیں (31)
+              </button>
+              <button type="button" class="action-btn action-btn-delete" title="کیٹیگری حذف کریں" onclick="DarbarAdmin.deleteCategory('special-masalay')">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Fries & Snacks -->
+        <div class="category-admin-card" id="cat-card-fries-masalay">
+          <div class="category-admin-thumb-wrap">
+            <img src="https://images.unsplash.com/photo-1576107232684-1279f3908594?w=500&auto=format&fit=crop&q=80" alt="Fries & Snacks" class="category-admin-thumb">
+            <div class="category-admin-badge"><i class="fa-solid fa-boxes-stacked"></i> 35 Items (مصالحے)</div>
+          </div>
+          <div class="category-admin-body">
+            <div class="category-admin-header">
+              <div>
+                <h4 class="category-admin-title">Fries &amp; Snacks</h4>
+                <div class="category-admin-urdu font-urdu">فرائز و چپس سیزننگز</div>
+              </div>
+              <code style="background: #FAF8F5; border: 1px solid #E5DFD5; padding: 2px 6px; border-radius: 4px; font-size: 0.72rem; color: #777;">fries-masalay</code>
+            </div>
+            <p class="category-admin-desc font-urdu">35 اقسام (پیری پیری، ذائقہ چپس)</p>
+            <div class="category-admin-items-preview">
+              <div style="font-size: 0.75rem; font-weight: 700; color: #666; display: flex; justify-content: space-between;">
+                <span>اس کیٹیگری کے مصالحے:</span>
+                <strong style="color: var(--admin-gold-dark);">35 کل</strong>
+              </div>
+              <div class="category-admin-items-tags">
+                <span class="category-item-tag">پیری پیری فلیور</span>
+                <span class="category-item-tag">فرائز اسپیشل</span>
+                <span class="category-item-tag">چلی گارلک</span>
+                <span class="category-item-tag">چیڈر چیز</span>
+                <span class="category-item-tag" style="background: #EFEAE2; color: #666;">+31 مزید</span>
+              </div>
+            </div>
+            <div class="category-admin-actions">
+              <button type="button" class="btn-tool btn-tool-primary" style="flex: 1; padding: 8px 10px; font-size: 0.8rem;" onclick="DarbarAdmin.openEditCategoryModal('fries-masalay')">
+                <i class="fa-solid fa-pen-to-square"></i> ترمیم و تصویر
+              </button>
+              <button type="button" class="btn-tool btn-tool-secondary" style="flex: 1; padding: 8px 10px; font-size: 0.8rem;" onclick="DarbarAdmin.openCategoryItemsModal('fries-masalay')">
+                <i class="fa-solid fa-list-check"></i> آئٹمز سنبھالیں (35)
+              </button>
+              <button type="button" class="action-btn action-btn-delete" title="کیٹیگری حذف کریں" onclick="DarbarAdmin.deleteCategory('fries-masalay')">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Pure Powders -->
+        <div class="category-admin-card" id="cat-card-spice-powders">
+          <div class="category-admin-thumb-wrap">
+            <img src="https://images.unsplash.com/photo-1615485500704-8e990f9900f7?w=500&auto=format&fit=crop&q=80" alt="Pure Powders" class="category-admin-thumb">
+            <div class="category-admin-badge"><i class="fa-solid fa-boxes-stacked"></i> 10 Items (مصالحے)</div>
+          </div>
+          <div class="category-admin-body">
+            <div class="category-admin-header">
+              <div>
+                <h4 class="category-admin-title">Pure Powders</h4>
+                <div class="category-admin-urdu font-urdu">خالص پسے مصالحے</div>
+              </div>
+              <code style="background: #FAF8F5; border: 1px solid #E5DFD5; padding: 2px 6px; border-radius: 4px; font-size: 0.72rem; color: #777;">spice-powders</code>
+            </div>
+            <p class="category-admin-desc font-urdu">10 اقسام (کشمیری مرچ، ہلدی، زیرہ)</p>
+            <div class="category-admin-items-preview">
+              <div style="font-size: 0.75rem; font-weight: 700; color: #666; display: flex; justify-content: space-between;">
+                <span>اس کیٹیگری کے مصالحے:</span>
+                <strong style="color: var(--admin-gold-dark);">10 کل</strong>
+              </div>
+              <div class="category-admin-items-tags">
+                <span class="category-item-tag">کشمیری لال مرچ</span>
+                <span class="category-item-tag">خالص پسے ہلدی</span>
+                <span class="category-item-tag">سفید زیرہ</span>
+                <span class="category-item-tag">دھنیا پاؤڈر</span>
+                <span class="category-item-tag" style="background: #EFEAE2; color: #666;">+6 مزید</span>
+              </div>
+            </div>
+            <div class="category-admin-actions">
+              <button type="button" class="btn-tool btn-tool-primary" style="flex: 1; padding: 8px 10px; font-size: 0.8rem;" onclick="DarbarAdmin.openEditCategoryModal('spice-powders')">
+                <i class="fa-solid fa-pen-to-square"></i> ترمیم و تصویر
+              </button>
+              <button type="button" class="btn-tool btn-tool-secondary" style="flex: 1; padding: 8px 10px; font-size: 0.8rem;" onclick="DarbarAdmin.openCategoryItemsModal('spice-powders')">
+                <i class="fa-solid fa-list-check"></i> آئٹمز سنبھالیں (10)
+              </button>
+              <button type="button" class="action-btn action-btn-delete" title="کیٹیگری حذف کریں" onclick="DarbarAdmin.deleteCategory('spice-powders')">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Royal Chaat -->
+        <div class="category-admin-card" id="cat-card-chaat-masalay">
+          <div class="category-admin-thumb-wrap">
+            <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&auto=format&fit=crop&q=80" alt="Royal Chaat" class="category-admin-thumb">
+            <div class="category-admin-badge"><i class="fa-solid fa-boxes-stacked"></i> 8 Items (مصالحے)</div>
+          </div>
+          <div class="category-admin-body">
+            <div class="category-admin-header">
+              <div>
+                <h4 class="category-admin-title">Royal Chaat</h4>
+                <div class="category-admin-urdu font-urdu">شاہی چاٹ مصالحہ جات</div>
+              </div>
+              <code style="background: #FAF8F5; border: 1px solid #E5DFD5; padding: 2px 6px; border-radius: 4px; font-size: 0.72rem; color: #777;">chaat-masalay</code>
+            </div>
+            <p class="category-admin-desc font-urdu">8 اقسام (وی آئی پی، گول گپے چاٹ)</p>
+            <div class="category-admin-items-preview">
+              <div style="font-size: 0.75rem; font-weight: 700; color: #666; display: flex; justify-content: space-between;">
+                <span>اس کیٹیگری کے مصالحے:</span>
+                <strong style="color: var(--admin-gold-dark);">8 کل</strong>
+              </div>
+              <div class="category-admin-items-tags">
+                <span class="category-item-tag">وی آئی پی چاٹ مصالحہ</span>
+                <span class="category-item-tag">گول گپے کھٹا مصالحہ</span>
+                <span class="category-item-tag">دہی بڑے مصالحہ</span>
+                <span class="category-item-tag" style="background: #EFEAE2; color: #666;">+5 مزید</span>
+              </div>
+            </div>
+            <div class="category-admin-actions">
+              <button type="button" class="btn-tool btn-tool-primary" style="flex: 1; padding: 8px 10px; font-size: 0.8rem;" onclick="DarbarAdmin.openEditCategoryModal('chaat-masalay')">
+                <i class="fa-solid fa-pen-to-square"></i> ترمیم و تصویر
+              </button>
+              <button type="button" class="btn-tool btn-tool-secondary" style="flex: 1; padding: 8px 10px; font-size: 0.8rem;" onclick="DarbarAdmin.openCategoryItemsModal('chaat-masalay')">
+                <i class="fa-solid fa-list-check"></i> آئٹمز سنبھالیں (8)
+              </button>
+              <button type="button" class="action-btn action-btn-delete" title="کیٹیگری حذف کریں" onclick="DarbarAdmin.deleteCategory('chaat-masalay')">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Sauces & Mayos -->
+        <div class="category-admin-card" id="cat-card-sauces">
+          <div class="category-admin-thumb-wrap">
+            <img src="https://images.unsplash.com/photo-1585238342024-78d387f4a707?w=500&auto=format&fit=crop&q=80" alt="Sauces & Mayos" class="category-admin-thumb">
+            <div class="category-admin-badge"><i class="fa-solid fa-boxes-stacked"></i> 8 Items (مصالحے)</div>
+          </div>
+          <div class="category-admin-body">
+            <div class="category-admin-header">
+              <div>
+                <h4 class="category-admin-title">Sauces &amp; Mayos</h4>
+                <div class="category-admin-urdu font-urdu">اسپیشل ساسز اور مایو</div>
+              </div>
+              <code style="background: #FAF8F5; border: 1px solid #E5DFD5; padding: 2px 6px; border-radius: 4px; font-size: 0.72rem; color: #777;">sauces</code>
+            </div>
+            <p class="category-admin-desc font-urdu">8 اقسام (چپوٹلے، گارلک مایو)</p>
+            <div class="category-admin-items-preview">
+              <div style="font-size: 0.75rem; font-weight: 700; color: #666; display: flex; justify-content: space-between;">
+                <span>اس کیٹیگری کے مصالحے:</span>
+                <strong style="color: var(--admin-gold-dark);">8 کل</strong>
+              </div>
+              <div class="category-admin-items-tags">
+                <span class="category-item-tag">گارلک مایونیز</span>
+                <span class="category-item-tag">چپوٹلے ساس</span>
+                <span class="category-item-tag">مٹر چلی ساس</span>
+                <span class="category-item-tag" style="background: #EFEAE2; color: #666;">+5 مزید</span>
+              </div>
+            </div>
+            <div class="category-admin-actions">
+              <button type="button" class="btn-tool btn-tool-primary" style="flex: 1; padding: 8px 10px; font-size: 0.8rem;" onclick="DarbarAdmin.openEditCategoryModal('sauces')">
+                <i class="fa-solid fa-pen-to-square"></i> ترمیم و تصویر
+              </button>
+              <button type="button" class="btn-tool btn-tool-secondary" style="flex: 1; padding: 8px 10px; font-size: 0.8rem;" onclick="DarbarAdmin.openCategoryItemsModal('sauces')">
+                <i class="fa-solid fa-list-check"></i> آئٹمز سنبھالیں (8)
+              </button>
+              <button type="button" class="action-btn action-btn-delete" title="کیٹیگری حذف کریں" onclick="DarbarAdmin.deleteCategory('sauces')">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. Mega Deals -->
+        <div class="category-admin-card" id="cat-card-deals">
+          <div class="category-admin-thumb-wrap">
+            <img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=500&auto=format&fit=crop&q=80" alt="Mega Deals" class="category-admin-thumb">
+            <div class="category-admin-badge"><i class="fa-solid fa-boxes-stacked"></i> 3 Items (مصالحے)</div>
+          </div>
+          <div class="category-admin-body">
+            <div class="category-admin-header">
+              <div>
+                <h4 class="category-admin-title">Mega Saver Deals</h4>
+                <div class="category-admin-urdu font-urdu">شاہی بچت پیکجز</div>
+              </div>
+              <code style="background: #FAF8F5; border: 1px solid #E5DFD5; padding: 2px 6px; border-radius: 4px; font-size: 0.72rem; color: #777;">deals</code>
+            </div>
+            <p class="category-admin-desc font-urdu">3 خصوصی رعایتی بنڈلز</p>
+            <div class="category-admin-items-preview">
+              <div style="font-size: 0.75rem; font-weight: 700; color: #666; display: flex; justify-content: space-between;">
+                <span>اس کیٹیگری کے مصالحے:</span>
+                <strong style="color: var(--admin-gold-dark);">3 کل</strong>
+              </div>
+              <div class="category-admin-items-tags">
+                <span class="category-item-tag">شاہی باورچی خانہ بنڈل</span>
+                <span class="category-item-tag">فرائز ماسٹر پیک</span>
+                <span class="category-item-tag">باربی کیو فیملی پیک</span>
+              </div>
+            </div>
+            <div class="category-admin-actions">
+              <button type="button" class="btn-tool btn-tool-primary" style="flex: 1; padding: 8px 10px; font-size: 0.8rem;" onclick="DarbarAdmin.openEditCategoryModal('deals')">
+                <i class="fa-solid fa-pen-to-square"></i> ترمیم و تصویر
+              </button>
+              <button type="button" class="btn-tool btn-tool-secondary" style="flex: 1; padding: 8px 10px; font-size: 0.8rem;" onclick="DarbarAdmin.openCategoryItemsModal('deals')">
+                <i class="fa-solid fa-list-check"></i> آئٹمز سنبھالیں (3)
+              </button>
+              <button type="button" class="action-btn action-btn-delete" title="کیٹیگری حذف کریں" onclick="DarbarAdmin.deleteCategory('deals')">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
