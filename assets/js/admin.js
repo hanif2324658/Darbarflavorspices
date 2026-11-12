@@ -33,6 +33,7 @@ const DarbarAdmin = {
     this.ensureInitialData();
     this.renderMetrics();
     this.renderProductsTable();
+    this.renderCategories();
     this.renderOrdersTable();
     this.renderReviews();
     this.loadStoreSettings();
@@ -78,6 +79,7 @@ const DarbarAdmin = {
       this.ensureInitialData();
       this.renderMetrics();
       this.renderProductsTable();
+      this.renderCategories();
       this.renderOrdersTable();
       this.renderReviews();
       this.loadStoreSettings();
@@ -767,6 +769,7 @@ const DarbarAdmin = {
 
     const payload = {
       products: DarbarData.getProducts(),
+      categories: (typeof DarbarData.getCategories === 'function') ? DarbarData.getCategories() : [],
       reviews: DarbarData.getReviews(),
       storeConfig: cfg,
       updatedAt: new Date().toISOString()
@@ -1351,6 +1354,356 @@ const DarbarAdmin = {
   },
 
   // ==============================================================
+  // CATEGORIES & PICTURES CONTROLLER (کیٹیگریز و تصاویر کا مکمل نظام)
+  // ==============================================================
+  categorySearchQuery: '',
+  activeManageCategoryId: null,
+
+  renderCategories() {
+    const grid = document.getElementById('adminCategoriesGrid');
+    if (!grid) return;
+
+    if (typeof DarbarData === 'undefined' || typeof DarbarData.getCategories !== 'function') {
+      grid.innerHTML = '<p style="color: #888; padding: 20px;">کیٹیگریز لوڈ ہو رہی ہیں...</p>';
+      return;
+    }
+
+    let categories = DarbarData.getCategories();
+    if (this.categorySearchQuery) {
+      const q = this.categorySearchQuery.toLowerCase();
+      categories = categories.filter(c => 
+        (c.name && c.name.toLowerCase().includes(q)) ||
+        (c.urduName && c.urduName.includes(q)) ||
+        (c.id && c.id.toLowerCase().includes(q)) ||
+        (c.desc && c.desc.toLowerCase().includes(q))
+      );
+    }
+
+    if (!categories || categories.length === 0) {
+      grid.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 40px 20px; background: #FAF8F5; border: 1.5px dashed #DED8CE; border-radius: 12px;">
+          <i class="fa-solid fa-folder-open" style="font-size: 2.2rem; color: var(--admin-gold); margin-bottom: 10px;"></i>
+          <h4 style="margin: 0; color: var(--admin-text-main);">کوئی کیٹیگری نہیں ملی</h4>
+          <p style="color: #777; font-size: 0.88rem; margin: 6px 0 16px;">اوپر دیئے گئے بٹن سے نئی کیٹیگری شامل کریں۔</p>
+          <button class="btn-tool btn-tool-primary" onclick="DarbarAdmin.openAddCategoryModal()">
+            <i class="fa-solid fa-plus"></i> نئی کیٹیگری بنائیں
+          </button>
+        </div>
+      `;
+      return;
+    }
+
+    grid.innerHTML = categories.map(cat => {
+      const itemCount = DarbarData.getItemCountByCategory(cat.id);
+      const products = DarbarData.getProductsByCategory(cat.id);
+      const previewChips = products.slice(0, 4).map(p => 
+        `<span class="category-item-tag" title="${p.title}">${p.urduTitle || p.title}</span>`
+      ).join('');
+      const moreCount = products.length > 4 ? `<span class="category-item-tag" style="background: #EFEAE2; color: #666;">+${products.length - 4} مزید</span>` : '';
+
+      return `
+      <div class="category-admin-card" id="cat-card-${cat.id}">
+        <div class="category-admin-thumb-wrap">
+          <img src="${cat.image || 'assets/images/logo.png'}" alt="${cat.name}" class="category-admin-thumb" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=500&auto=format&fit=crop&q=80';">
+          <div class="category-admin-badge">
+            <i class="fa-solid fa-boxes-stacked"></i> ${itemCount} Items (مصالحے)
+          </div>
+        </div>
+
+        <div class="category-admin-body">
+          <div class="category-admin-header">
+            <div>
+              <h4 class="category-admin-title">${cat.name}</h4>
+              <div class="category-admin-urdu font-urdu">${cat.urduName || ''}</div>
+            </div>
+            <code style="background: #FAF8F5; border: 1px solid #E5DFD5; padding: 2px 6px; border-radius: 4px; font-size: 0.72rem; color: #777;">${cat.id}</code>
+          </div>
+
+          <p class="category-admin-desc font-urdu">${cat.desc || 'خالص و روایتی مصالحہ جات'}</p>
+
+          <div class="category-admin-items-preview">
+            <div style="font-size: 0.75rem; font-weight: 700; color: #666; display: flex; justify-content: space-between;">
+              <span>اس کیٹیگری کے مصالحے:</span>
+              <strong style="color: var(--admin-gold-dark);">${itemCount} کل</strong>
+            </div>
+            <div class="category-admin-items-tags">
+              ${previewChips || '<span style="font-size: 0.74rem; color: #999;">کوئی آئٹم تفویض نہیں</span>'}
+              ${moreCount}
+            </div>
+          </div>
+
+          <div class="category-admin-actions">
+            <button type="button" class="btn-tool btn-tool-primary" style="flex: 1; padding: 8px 10px; font-size: 0.8rem;" onclick="DarbarAdmin.openEditCategoryModal('${cat.id}')">
+              <i class="fa-solid fa-pen-to-square"></i> ترمیم و تصویر
+            </button>
+            <button type="button" class="btn-tool btn-tool-secondary" style="flex: 1; padding: 8px 10px; font-size: 0.8rem;" onclick="DarbarAdmin.openCategoryItemsModal('${cat.id}')">
+              <i class="fa-solid fa-list-check"></i> آئٹمز سنبھالیں (${itemCount})
+            </button>
+            <button type="button" class="action-btn action-btn-delete" title="کیٹیگری حذف کریں" onclick="DarbarAdmin.deleteCategory('${cat.id}')">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      `;
+    }).join('');
+  },
+
+  filterCategories(query) {
+    this.categorySearchQuery = (query || '').trim();
+    this.renderCategories();
+  },
+
+  openAddCategoryModal() {
+    const modal = document.getElementById('adminCategoryModal');
+    if (!modal) return;
+    document.getElementById('categoryModalTitle').innerHTML = '<i class="fa-solid fa-folder-plus" style="color: var(--admin-gold);"></i> <span>نئی کیٹیگری بنائیں (Add New Category)</span>';
+    document.getElementById('editCategoryId').value = '';
+    document.getElementById('categorySlug').value = '';
+    document.getElementById('categorySlug').readOnly = false;
+    document.getElementById('categoryNameEn').value = '';
+    document.getElementById('categoryNameUr').value = '';
+    document.getElementById('categoryImageUrl').value = this.presetImages.biryani;
+    document.getElementById('categoryDesc').value = '';
+    this.updateCategoryModalPreview(this.presetImages.biryani);
+    modal.classList.add('active');
+  },
+
+  openEditCategoryModal(id) {
+    const modal = document.getElementById('adminCategoryModal');
+    if (!modal) return;
+    const cat = DarbarData.getCategoryById(id);
+    if (!cat) return;
+
+    document.getElementById('categoryModalTitle').innerHTML = '<i class="fa-solid fa-pen-to-square" style="color: var(--admin-gold);"></i> <span>کیٹیگری و تصویر میں ترمیم (Edit Category)</span>';
+    document.getElementById('editCategoryId').value = cat.id;
+    document.getElementById('categorySlug').value = cat.id;
+    document.getElementById('categorySlug').readOnly = true;
+    document.getElementById('categoryNameEn').value = cat.name || '';
+    document.getElementById('categoryNameUr').value = cat.urduName || '';
+    document.getElementById('categoryImageUrl').value = cat.image || '';
+    document.getElementById('categoryDesc').value = cat.desc || '';
+    this.updateCategoryModalPreview(cat.image || '');
+    modal.classList.add('active');
+  },
+
+  closeCategoryModal() {
+    const modal = document.getElementById('adminCategoryModal');
+    if (modal) modal.classList.remove('active');
+  },
+
+  setCategoryPresetImage(key) {
+    const url = this.presetImages[key];
+    if (!url) return;
+    const input = document.getElementById('categoryImageUrl');
+    if (input) {
+      input.value = url;
+      this.updateCategoryModalPreview(url);
+    }
+  },
+
+  updateCategoryModalPreview(url) {
+    const preview = document.getElementById('categoryImagePreview');
+    if (!preview) return;
+    preview.src = url || 'assets/images/logo.png';
+  },
+
+  async handleCategoryFormSubmit(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const editId = document.getElementById('editCategoryId').value.trim();
+    let slug = document.getElementById('categorySlug').value.trim().toLowerCase().replace(/[^a-z0-9_-]/g, '-');
+    const nameEn = document.getElementById('categoryNameEn').value.trim();
+    const nameUr = document.getElementById('categoryNameUr').value.trim();
+    const image = document.getElementById('categoryImageUrl').value.trim();
+    const desc = document.getElementById('categoryDesc').value.trim();
+
+    if (!slug) slug = nameEn.toLowerCase().replace(/[^a-z0-9_-]/g, '-');
+
+    const catData = {
+      id: editId || slug,
+      name: nameEn,
+      urduName: nameUr,
+      image: image || 'assets/images/logo.png',
+      desc: desc
+    };
+
+    if (editId) {
+      DarbarData.updateCategory(editId, catData);
+    } else {
+      DarbarData.addCategory(catData);
+    }
+
+    // Auto sync to Firebase
+    const cfg = DarbarData.getStoreConfig();
+    if (cfg && cfg.cloudSyncUrl) {
+      await this.pushToCloud(false);
+    }
+
+    this.renderCategories();
+    this.renderProductsTable();
+    this.closeCategoryModal();
+
+    if (typeof DarbarApp !== 'undefined') {
+      DarbarApp.showToast(`کیٹیگری "${nameEn}" کامیابی سے محفوظ ہو گئی!`);
+    }
+  },
+
+  async deleteCategory(id) {
+    const cat = DarbarData.getCategoryById(id);
+    const name = cat ? cat.name : id;
+    const count = DarbarData.getItemCountByCategory(id);
+    if (!confirm(`کیا آپ واقعی کیٹیگری "${name}" کو حذف کرنا چاہتے ہیں؟\nاس میں موجود ${count} آئٹمز ڈیلیٹ نہیں ہوں گے بلکہ خود بخود دوسری کیٹیگری میں منتقل ہو جائیں گے۔`)) {
+      return;
+    }
+
+    // Reassign products to fallback category
+    const products = DarbarData.getProductsByCategory(id);
+    products.forEach(p => {
+      DarbarData.updateProduct(p.id, { category: 'special-masalay', categoryName: 'Cooking Recipes' });
+    });
+
+    DarbarData.deleteCategory(id);
+
+    const cfg = DarbarData.getStoreConfig();
+    if (cfg && cfg.cloudSyncUrl) {
+      await this.pushToCloud(false);
+    }
+
+    this.renderCategories();
+    this.renderProductsTable();
+
+    if (typeof DarbarApp !== 'undefined') {
+      DarbarApp.showToast(`کیٹیگری "${name}" حذف کر دی گئی۔`);
+    }
+  },
+
+  // ==============================================================
+  // CATEGORY ITEMS MANAGER MODAL (کیٹیگری آئٹمز لسٹ و تفویض)
+  // ==============================================================
+  openCategoryItemsModal(categoryId) {
+    const modal = document.getElementById('adminCategoryItemsModal');
+    if (!modal) return;
+    this.activeManageCategoryId = categoryId;
+    const cat = DarbarData.getCategoryById(categoryId);
+    const catName = cat ? cat.name : categoryId;
+    const catUrdu = cat ? cat.urduName : '';
+
+    const titleEl = document.getElementById('categoryItemsModalTitle');
+    const subEl = document.getElementById('categoryItemsModalSubtitle');
+    if (titleEl) titleEl.innerHTML = `<i class="fa-solid fa-boxes-stacked" style="color: var(--admin-gold);"></i> <span>${catName} (${catUrdu}) - آئٹمز مینیجر</span>`;
+    if (subEl) subEl.textContent = `اس کیٹیگری میں موجود تمام مصالحہ جات دیکھیں یا نیا آئٹم شامل کریں۔`;
+
+    this.renderCategoryItemsModalContent();
+    modal.classList.add('active');
+  },
+
+  closeCategoryItemsModal() {
+    const modal = document.getElementById('adminCategoryItemsModal');
+    if (modal) modal.classList.remove('active');
+    this.activeManageCategoryId = null;
+  },
+
+  renderCategoryItemsModalContent() {
+    const catId = this.activeManageCategoryId;
+    if (!catId) return;
+
+    const tbody = document.getElementById('categoryItemsTableBody');
+    const select = document.getElementById('assignProductSelect');
+    if (!tbody || !select) return;
+
+    const allProducts = DarbarData.getProducts();
+    const inCatProducts = allProducts.filter(p => p.category === catId);
+    const otherProducts = allProducts.filter(p => p.category !== catId);
+
+    // Populate dropdown of available products to add
+    select.innerHTML = '<option value="">-- فہرست میں سے کوئی بھی مصالحہ منتخب کریں --</option>' + 
+      otherProducts.map(p => `<option value="${p.id}">${p.title} (${p.urduTitle || ''}) - [موجودہ: ${p.categoryName || p.category}]</option>`).join('');
+
+    // Populate table of items in this category
+    if (inCatProducts.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="5" style="text-align: center; padding: 30px; color: #888;">
+            اس کیٹیگری میں فی الحال کوئی مصالحہ شامل نہیں ہے۔ اوپر دیئے گئے ڈراپ ڈاؤن سے آئٹم شامل کریں۔
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = inCatProducts.map(p => `
+      <tr>
+        <td>
+          <img src="${p.image}" alt="${p.title}" style="width: 36px; height: 36px; object-fit: cover; border-radius: 6px; border: 1px solid #DDD;" onerror="this.src='assets/images/logo.png'">
+        </td>
+        <td>
+          <strong style="color: var(--admin-text-main); font-size: 0.9rem;">${p.title}</strong>
+          <div class="font-urdu" style="font-size: 0.8rem; color: var(--admin-gold-dark);">${p.urduTitle || ''}</div>
+        </td>
+        <td style="font-weight: 700; color: var(--admin-gold-dark); font-size: 0.9rem;">
+          Rs. ${p.defaultPrice || (p.weightOptions && p.weightOptions[0] ? p.weightOptions[0].price : 0)}
+        </td>
+        <td>
+          <span class="status-badge ${p.inStock === false ? 'status-cancelled' : 'status-delivered'}" style="font-size: 0.72rem; padding: 2px 8px;">
+            ${p.inStock === false ? 'Out of Stock' : 'In Stock'}
+          </span>
+        </td>
+        <td style="text-align: right;">
+          <button type="button" class="btn-tool btn-tool-secondary" style="padding: 4px 10px; font-size: 0.75rem; color: #C0392B;" onclick="DarbarAdmin.handleRemoveProductFromCategory('${p.id}')" title="کیٹیگری سے ہٹائیں">
+            <i class="fa-solid fa-circle-xmark"></i> ہٹائیں
+          </button>
+        </td>
+      </tr>
+    `).join('');
+  },
+
+  async handleAssignProductToCategory() {
+    const select = document.getElementById('assignProductSelect');
+    if (!select) return;
+    const prodId = select.value;
+    if (!prodId) {
+      alert('براہ کرم ڈراپ ڈاؤن سے کوئی مصالحہ منتخب کریں۔');
+      return;
+    }
+    const catId = this.activeManageCategoryId;
+    if (!catId) return;
+
+    DarbarData.assignProductToCategory(prodId, catId);
+
+    const cfg = DarbarData.getStoreConfig();
+    if (cfg && cfg.cloudSyncUrl) {
+      await this.pushToCloud(false);
+    }
+
+    this.renderCategoryItemsModalContent();
+    this.renderCategories();
+    this.renderProductsTable();
+
+    if (typeof DarbarApp !== 'undefined') {
+      DarbarApp.showToast('مصالحہ کامیابی سے اس کیٹیگری میں شامل کر دیا گیا!');
+    }
+  },
+
+  async handleRemoveProductFromCategory(productId) {
+    if (!confirm('کیا آپ اس مصالحے کو اس کیٹیگری سے ہٹانا چاہتے ہیں؟')) return;
+
+    DarbarData.removeProductFromCategory(productId);
+
+    const cfg = DarbarData.getStoreConfig();
+    if (cfg && cfg.cloudSyncUrl) {
+      await this.pushToCloud(false);
+    }
+
+    this.renderCategoryItemsModalContent();
+    this.renderCategories();
+    this.renderProductsTable();
+
+    if (typeof DarbarApp !== 'undefined') {
+      DarbarApp.showToast('مصالحہ اس کیٹیگری سے ہٹا دیا گیا۔');
+    }
+  },
+
+  // ==============================================================
   // EVENT LISTENERS & TAB CONTROLS
   // ==============================================================
   setupEventListeners() {
@@ -1363,6 +1716,7 @@ const DarbarAdmin = {
         this.activeTab = tab;
 
         document.getElementById('productsSection').style.display = tab === 'products' ? 'block' : 'none';
+        document.getElementById('categoriesSection').style.display = tab === 'categories' ? 'block' : 'none';
         document.getElementById('ordersSection').style.display = tab === 'orders' ? 'block' : 'none';
         document.getElementById('reviewsSection').style.display = tab === 'reviews' ? 'block' : 'none';
         document.getElementById('storeSection').style.display = tab === 'store' ? 'block' : 'none';

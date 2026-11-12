@@ -282,7 +282,7 @@
         <div class="gold-divider"></div>
       </div>
 
-      <div class="categories-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+      <div class="categories-grid" id="homeCategoriesGrid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
         <!-- Special Masalay -->
         <a href="shop.html?category=special-masalay" class="category-card">
           <div class="category-img-wrap">
@@ -1066,6 +1066,42 @@
         }
       }
     };
+
+    // Dynamic Categories Rendering from DarbarData (Editable via Admin)
+    window.renderHomeCategories = function() {
+      const grid = document.getElementById('homeCategoriesGrid');
+      if (!grid || typeof DarbarData === 'undefined' || typeof DarbarData.getCategories !== 'function') return;
+      const categories = DarbarData.getCategories();
+      if (!categories || categories.length === 0) return;
+
+      const currentLang = (typeof DarbarApp !== 'undefined') ? DarbarApp.currentLanguage : 'ur';
+      const isUrdu = (currentLang === 'ur');
+
+      grid.innerHTML = categories.map(cat => {
+        const count = (typeof DarbarData.getItemCountByCategory === 'function') ? DarbarData.getItemCountByCategory(cat.id) : '';
+        const titleEn = cat.name || cat.id;
+        const titleUr = cat.urduName || '';
+        const countText = isUrdu ? `${count} اقسام` : `${count} Items`;
+        const descText = cat.desc ? `<span class="item-count font-urdu" style="font-size: 0.78rem; opacity: 0.85;">${cat.desc}</span>` : '';
+
+        return `
+        <a href="shop.html?category=${encodeURIComponent(cat.id)}" class="category-card" data-category="${cat.id}">
+          <div class="category-img-wrap">
+            <img src="${cat.image || 'assets/images/logo.png'}" alt="${titleEn}" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=300&auto=format&fit=crop&q=80';">
+          </div>
+          <h3>${isUrdu ? (titleUr || titleEn) : titleEn}</h3>
+          ${!isUrdu && titleUr ? `<div class="urdu-name font-urdu">${titleUr}</div>` : ''}
+          <span class="item-count font-urdu" style="font-weight: 700; color: var(--gold-light);">${countText}</span>
+          ${descText}
+        </a>
+        `;
+      }).join('');
+    };
+
+    // Initialize categories on load
+    document.addEventListener('DOMContentLoaded', () => {
+      window.renderHomeCategories();
+    });
   </script>
   <!-- Theme Color Switcher Script -->
   <script src="assets/js/theme-switcher.js"></script>

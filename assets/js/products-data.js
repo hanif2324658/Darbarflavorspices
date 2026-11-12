@@ -4395,6 +4395,142 @@ const DarbarData = {
     return true;
   },
 
+  // ==============================================================
+  // CATEGORIES MANAGEMENT SYSTEM (کیٹیگریز ڈیٹا کنٹرول)
+  // ==============================================================
+  getDefaultCategories() {
+    return [
+      {
+        id: "special-masalay",
+        name: "Cooking Recipes",
+        urduName: "ریسیپی مکس مصالحے",
+        image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500&auto=format&fit=crop&q=80",
+        desc: "31 اقسام (بریانی، نہاری، کباب)"
+      },
+      {
+        id: "fries-masalay",
+        name: "Fries & Snacks",
+        urduName: "فرائز و چپس سیزننگز",
+        image: "https://images.unsplash.com/photo-1576107232684-1279f3908594?w=500&auto=format&fit=crop&q=80",
+        desc: "35 اقسام (پیری پیری، ذائقہ چپس)"
+      },
+      {
+        id: "spice-powders",
+        name: "Pure Powders",
+        urduName: "خالص پسے مصالحے",
+        image: "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?w=500&auto=format&fit=crop&q=80",
+        desc: "10 اقسام (کشمیری مرچ، ہلدی، زیرہ)"
+      },
+      {
+        id: "chaat-masalay",
+        name: "Royal Chaat",
+        urduName: "شاہی چاٹ مصالحہ جات",
+        image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&auto=format&fit=crop&q=80",
+        desc: "8 اقسام (وی آئی پی، گول گپے چاٹ)"
+      },
+      {
+        id: "sauces",
+        name: "Sauces & Mayos",
+        urduName: "اسپیشل ساسز اور مایو",
+        image: "https://images.unsplash.com/photo-1585238342024-78d387f4a707?w=500&auto=format&fit=crop&q=80",
+        desc: "8 اقسام (چپوٹلے، گارلک مایو)"
+      },
+      {
+        id: "deals",
+        name: "Mega Saver Deals",
+        urduName: "شاہی بچت پیکجز",
+        image: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=500&auto=format&fit=crop&q=80",
+        desc: "3 خصوصی رعایتی بنڈلز"
+      }
+    ];
+  },
+
+  getCategories() {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        const saved = window.localStorage.getItem('darbar_custom_categories');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        }
+      }
+    } catch (e) {}
+    return this.getDefaultCategories();
+  },
+
+  saveCategories(categories) {
+    if (typeof window !== 'undefined') {
+      window.DARBAR_CATEGORIES = categories;
+      if (window.localStorage) {
+        try {
+          window.localStorage.setItem('darbar_custom_categories', JSON.stringify(categories));
+        } catch (e) {}
+      }
+      if (typeof window.renderHomeCategories === 'function') {
+        window.renderHomeCategories();
+      }
+    }
+  },
+
+  getCategoryById(id) {
+    return this.getCategories().find(c => c.id === id);
+  },
+
+  updateCategory(id, updates) {
+    const list = this.getCategories().map(c => {
+      if (c.id === id) {
+        return Object.assign({}, c, updates);
+      }
+      return c;
+    });
+    this.saveCategories(list);
+    return true;
+  },
+
+  addCategory(category) {
+    const list = [...this.getCategories()];
+    if (!category.id) {
+      category.id = (category.name || 'category').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || ('cat-' + Date.now());
+    }
+    const idx = list.findIndex(c => c.id === category.id);
+    if (idx >= 0) {
+      list[idx] = Object.assign({}, list[idx], category);
+    } else {
+      list.push(category);
+    }
+    this.saveCategories(list);
+    return category;
+  },
+
+  deleteCategory(id) {
+    const list = this.getCategories().filter(c => c.id !== id);
+    this.saveCategories(list);
+    return true;
+  },
+
+  getItemCountByCategory(categoryId) {
+    const products = this.getProducts();
+    return products.filter(p => p.category === categoryId).length;
+  },
+
+  getProductsByCategory(categoryId) {
+    const products = this.getProducts();
+    return products.filter(p => p.category === categoryId);
+  },
+
+  assignProductToCategory(productId, categoryId) {
+    const product = this.getProductById(productId);
+    if (!product) return false;
+    const cat = this.getCategoryById(categoryId);
+    const catName = cat ? cat.name : categoryId;
+    this.updateProduct(productId, { category: categoryId, categoryName: catName });
+    return true;
+  },
+
+  removeProductFromCategory(productId) {
+    return this.assignProductToCategory(productId, 'special-masalay');
+  },
+
   async syncFromCloud() {
     try {
       if (typeof window === 'undefined') return;
@@ -4421,6 +4557,11 @@ const DarbarData = {
                               (Array.isArray(data) ? data : null);
         if (Array.isArray(cloudProducts) && cloudProducts.length > 0) {
           this.saveProducts(cloudProducts);
+        }
+        const cloudCategories = (data && data.record && data.record.categories) || 
+                                (data && data.categories);
+        if (Array.isArray(cloudCategories) && cloudCategories.length > 0) {
+          this.saveCategories(cloudCategories);
         }
         const cloudReviews = (data && data.record && data.record.reviews) || 
                              (data && data.reviews);

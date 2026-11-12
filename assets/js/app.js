@@ -131,6 +131,11 @@ const DarbarApp = {
       window.renderFeaturedProducts();
     }
 
+    // Re-render home page categories grid if present
+    if (typeof window.renderHomeCategories === 'function') {
+      window.renderHomeCategories();
+    }
+
     // Re-render shop page grid if present
     if (typeof window.ShopController !== 'undefined' && typeof window.ShopController.renderProducts === 'function') {
       window.ShopController.renderProducts();
