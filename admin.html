@@ -34,7 +34,7 @@
           <label style="display: block; font-size: 0.82rem; font-weight: 700; color: #D1D5DB; margin-bottom: 6px;">
             <i class="fa-solid fa-user-shield" style="color: var(--gold-primary); margin-right: 6px;"></i> Username or Email (ای میل یا یوزر نام)
           </label>
-          <input type="text" id="loginUsername" class="form-control" placeholder="admin or darbar.flavours03@gmail.com" required style="background: #24201C; border-color: #3D352E; color: #FFF; padding: 12px 14px; font-size: 0.95rem;">
+          <input type="text" id="loginUsername" class="form-control" placeholder="یوزر نام یا ای میل درج کریں" required autocomplete="username" style="background: #24201C; border-color: #3D352E; color: #FFF; padding: 12px 14px; font-size: 0.95rem;">
         </div>
 
         <div style="margin-bottom: 22px;">
@@ -42,7 +42,7 @@
             <i class="fa-solid fa-key" style="color: var(--gold-primary); margin-right: 6px;"></i> Security PIN Code (سیکیورٹی پن)
           </label>
           <div style="position: relative;">
-            <input type="password" id="loginPassword" class="form-control" placeholder="Default PIN: darbar2026" required style="background: #24201C; border-color: #3D352E; color: #FFF; padding: 12px 42px 12px 14px; font-size: 0.95rem;">
+            <input type="password" id="loginPassword" class="form-control" placeholder="سیکیورٹی پن کوڈ درج کریں" required autocomplete="current-password" style="background: #24201C; border-color: #3D352E; color: #FFF; padding: 12px 42px 12px 14px; font-size: 0.95rem;">
             <button type="button" onclick="DarbarAdmin.togglePasswordVisibility()" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: transparent; border: none; color: #888; cursor: pointer;">
               <i class="fa-regular fa-eye" id="togglePasswordIcon"></i>
             </button>
@@ -84,6 +84,10 @@
         <i class="fa-solid fa-arrow-up-right-from-square"></i>
         <span>Visit Online Store</span>
       </a>
+      <button type="button" class="btn-change-pin" onclick="DarbarAdmin.openChangePinModal()" style="background: rgba(197, 160, 89, 0.15); border: 1.2px solid var(--gold-primary); color: var(--gold-light); padding: 7px 14px; border-radius: 6px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; transition: all 0.25s ease;" title="Change Admin Security PIN (سیکیورٹی پن تبدیل کریں)">
+        <i class="fa-solid fa-key"></i>
+        <span>پن تبدیل کریں (Change PIN)</span>
+      </button>
       <button type="button" class="btn-logout" onclick="DarbarAdmin.logout()" style="background: rgba(178, 34, 34, 0.25); border: 1.2px solid #E74C3C; color: #FF9E9E; padding: 7px 16px; border-radius: 6px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; transition: all 0.25s ease;" title="Sign Out from Admin">
         <i class="fa-solid fa-right-from-bracket"></i>
         <span>لاگ آؤٹ (Sign Out)</span>
@@ -347,8 +351,13 @@
             </div>
             <div class="form-group">
               <label class="form-label">Admin Security PIN (ایڈمن لاگ ان پن)</label>
-              <input type="password" id="adminPinCode" class="form-control" placeholder="Default: darbar2026">
-              <div class="form-help">Secures your admin portal on public devices.</div>
+              <div style="display: flex; gap: 8px;">
+                <input type="password" id="adminPinCode" class="form-control" placeholder="سیکیورٹی پن محفوظ ہے" readonly style="background: #F3EFEA; cursor: not-allowed; letter-spacing: 2px;">
+                <button type="button" class="btn-tool btn-tool-primary" onclick="DarbarAdmin.openChangePinModal()" style="white-space: nowrap; padding: 0 16px; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px;">
+                  <i class="fa-solid fa-key"></i> پن تبدیل کریں
+                </button>
+              </div>
+              <div class="form-help">سیکیورٹی پن تبدیل کرنے کے لیے "پن تبدیل کریں" بٹن پر کلک کریں۔</div>
             </div>
           </div>
 
@@ -617,6 +626,68 @@
   <div class="admin-modal-overlay" id="adminInvoiceModal">
     <div class="admin-modal-box" id="invoiceModalContent">
       <!-- Populated dynamically by admin.js -->
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- MODAL 4: CHANGE ADMIN SECURITY PIN / PASSWORD -->
+  <!-- ============================================================== -->
+  <div class="admin-modal-overlay" id="adminChangePinModal">
+    <div class="admin-modal-box" style="max-width: 480px;">
+      <div class="modal-header-row">
+        <h3 style="margin: 0; font-size: 1.25rem; display: flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-key" style="color: var(--admin-gold);"></i>
+          <span>سیکیورٹی پن تبدیل کریں (Change PIN)</span>
+        </h3>
+        <button type="button" class="modal-close-btn" onclick="DarbarAdmin.closeChangePinModal()">&times;</button>
+      </div>
+
+      <div id="changePinAlert" style="display: none; padding: 10px 14px; border-radius: 6px; font-size: 0.88rem; margin: 15px 0 5px; text-align: center;"></div>
+
+      <form id="changePinForm" onsubmit="DarbarAdmin.handleChangePinSubmit(event)" style="margin-top: 15px;">
+        <div class="form-group">
+          <label class="form-label" style="font-weight: 700;">
+            <i class="fa-solid fa-lock" style="color: var(--admin-gold);"></i> موجودہ سیکیورٹی پن (Current PIN) *
+          </label>
+          <div style="position: relative;">
+            <input type="password" id="modalCurrentPin" class="form-control" placeholder="موجودہ پن کوڈ درج کریں" required autocomplete="current-password" style="padding-right: 42px;">
+            <button type="button" onclick="DarbarAdmin.toggleFieldVisibility('modalCurrentPin', 'eyeCurrentPin')" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: transparent; border: none; color: #888; cursor: pointer;">
+              <i class="fa-regular fa-eye" id="eyeCurrentPin"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" style="font-weight: 700;">
+            <i class="fa-solid fa-key" style="color: var(--admin-gold);"></i> نیا سیکیورٹی پن (New PIN Code) *
+          </label>
+          <div style="position: relative;">
+            <input type="password" id="modalNewPin" class="form-control" placeholder="نیا پن درج کریں (کم از کم 4 ہندسے یا حروف)" required minlength="4" autocomplete="new-password" style="padding-right: 42px;">
+            <button type="button" onclick="DarbarAdmin.toggleFieldVisibility('modalNewPin', 'eyeNewPin')" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: transparent; border: none; color: #888; cursor: pointer;">
+              <i class="fa-regular fa-eye" id="eyeNewPin"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" style="font-weight: 700;">
+            <i class="fa-solid fa-shield-halved" style="color: var(--admin-gold);"></i> نئے پن کی تصدیق (Confirm New PIN) *
+          </label>
+          <div style="position: relative;">
+            <input type="password" id="modalConfirmPin" class="form-control" placeholder="نیا پن دوبارہ درج کریں" required minlength="4" autocomplete="new-password" style="padding-right: 42px;">
+            <button type="button" onclick="DarbarAdmin.toggleFieldVisibility('modalConfirmPin', 'eyeConfirmPin')" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: transparent; border: none; color: #888; cursor: pointer;">
+              <i class="fa-regular fa-eye" id="eyeConfirmPin"></i>
+            </button>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 22px; border-top: 1px solid #ECE7DE; padding-top: 16px;">
+          <button type="button" class="btn-tool btn-tool-secondary" onclick="DarbarAdmin.closeChangePinModal()">منسوخ کریں (Cancel)</button>
+          <button type="submit" class="btn-tool btn-tool-primary" style="padding: 10px 22px;">
+            <i class="fa-solid fa-check"></i> نیا پن محفوظ کریں (Save PIN)
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 

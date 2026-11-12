@@ -968,6 +968,16 @@ body.admin-body {
     display: none; /* Icon only */
   }
 
+  .btn-change-pin {
+    padding: 6px 10px !important;
+    font-size: 0.75rem !important;
+    border-radius: 6px !important;
+  }
+
+  .btn-change-pin span {
+    display: none; /* Icon only on mobile screens */
+  }
+
   .btn-logout {
     padding: 6px 10px !important;
     font-size: 0.75rem !important;

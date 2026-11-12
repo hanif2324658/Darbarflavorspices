@@ -64,11 +64,12 @@ const DarbarAdmin = {
     const errText = document.getElementById('adminLoginErrorText');
 
     const cfg = (typeof DarbarData !== 'undefined') ? DarbarData.getStoreConfig() : {};
-    const validPin = (cfg && cfg.adminPin) ? cfg.adminPin : 'darbar2026';
+    const customPin = (typeof localStorage !== 'undefined') ? localStorage.getItem('darbar_custom_pin') : null;
+    const activePin = (cfg && cfg.adminPin) ? cfg.adminPin : (customPin || 'darbar2026');
     const validEmails = ['admin', 'darbar', 'darbar.flavours03@gmail.com'];
 
     const userValid = validEmails.some(val => user.includes(val)) || user === '';
-    const passValid = (pass === validPin) || (pass === 'darbar2026') || (pass === 'admin123');
+    const passValid = (pass === activePin);
 
     if (userValid && passValid) {
       sessionStorage.setItem('darbar_admin_auth', 'true');
@@ -88,7 +89,7 @@ const DarbarAdmin = {
     } else {
       if (errBox) {
         errBox.style.display = 'block';
-        if (errText) errText.textContent = 'غلط یوزر نیم یا سیکیورٹی پن! براہ کرم درست پن درج کریں۔ (Default PIN: darbar2026)';
+        if (errText) errText.textContent = 'غلط یوزر نام یا سیکیورٹی پن! براہ کرم درست معلومات درج کریں۔';
       }
     }
   },
@@ -620,13 +621,17 @@ const DarbarAdmin = {
     if (elEmail) elEmail.value = cfg.email || 'darbar.flavours03@gmail.com';
     if (elPhone) elPhone.value = cfg.phoneDisplay || '+92 310 2465004';
     if (elWa) elWa.value = cfg.whatsappNumber || '+923102465004';
-    if (elPin) elPin.value = cfg.adminPin || 'darbar2026';
+    if (elPin) elPin.value = '••••••••';
     if (elCloudUrl) elCloudUrl.value = cfg.cloudSyncUrl || '';
     if (elCloudKey) elCloudKey.value = cfg.cloudApiKey || '';
   },
 
   saveStoreSettings(e) {
     if (e && e.preventDefault) e.preventDefault();
+
+    const existingCfg = (typeof DarbarData !== 'undefined') ? DarbarData.getStoreConfig() : {};
+    const customPin = (typeof localStorage !== 'undefined') ? localStorage.getItem('darbar_custom_pin') : null;
+    const activePin = (existingCfg && existingCfg.adminPin) ? existingCfg.adminPin : (customPin || 'darbar2026');
 
     const newCfg = {
       brandName: document.getElementById('storeBrandName').value.trim(),
@@ -636,7 +641,7 @@ const DarbarAdmin = {
       email: document.getElementById('storeEmail').value.trim(),
       phoneDisplay: document.getElementById('storePhoneDisplay').value.trim(),
       whatsappNumber: document.getElementById('storeWhatsapp').value.trim(),
-      adminPin: document.getElementById('adminPinCode').value.trim() || 'darbar2026',
+      adminPin: activePin,
       cloudSyncUrl: document.getElementById('cloudSyncUrl') ? document.getElementById('cloudSyncUrl').value.trim() : '',
       cloudApiKey: document.getElementById('cloudApiKey') ? document.getElementById('cloudApiKey').value.trim() : ''
     };
@@ -651,6 +656,103 @@ const DarbarAdmin = {
     if (typeof DarbarApp !== 'undefined') {
       DarbarApp.showToast('دکان کی معلومات و کلاؤڈ سیٹنگز محفوظ ہو گئیں!');
     }
+  },
+
+  // ==============================================================
+  // CHANGE SECURITY PIN CONTROLLER (سیکیورٹی پن تبدیل کرنے کا مکمل نظام)
+  // ==============================================================
+  openChangePinModal() {
+    const modal = document.getElementById('adminChangePinModal');
+    if (!modal) return;
+    const alertBox = document.getElementById('changePinAlert');
+    if (alertBox) alertBox.style.display = 'none';
+    const cur = document.getElementById('modalCurrentPin');
+    const np = document.getElementById('modalNewPin');
+    const cp = document.getElementById('modalConfirmPin');
+    if (cur) cur.value = '';
+    if (np) np.value = '';
+    if (cp) cp.value = '';
+    modal.classList.add('active');
+  },
+
+  closeChangePinModal() {
+    const modal = document.getElementById('adminChangePinModal');
+    if (modal) modal.classList.remove('active');
+  },
+
+  toggleFieldVisibility(fieldId, iconId) {
+    const input = document.getElementById(fieldId);
+    const icon = document.getElementById(iconId);
+    if (!input) return;
+    if (input.type === 'password') {
+      input.type = 'text';
+      if (icon) icon.className = 'fa-regular fa-eye-slash';
+    } else {
+      input.type = 'password';
+      if (icon) icon.className = 'fa-regular fa-eye';
+    }
+  },
+
+  async handleChangePinSubmit(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const curPin = (document.getElementById('modalCurrentPin') ? document.getElementById('modalCurrentPin').value : '').trim();
+    const newPin = (document.getElementById('modalNewPin') ? document.getElementById('modalNewPin').value : '').trim();
+    const confirmPin = (document.getElementById('modalConfirmPin') ? document.getElementById('modalConfirmPin').value : '').trim();
+    const alertBox = document.getElementById('changePinAlert');
+
+    const showAlert = (msg, isSuccess = false) => {
+      if (!alertBox) return;
+      alertBox.style.display = 'block';
+      alertBox.style.background = isSuccess ? 'rgba(46, 204, 113, 0.15)' : 'rgba(231, 76, 60, 0.15)';
+      alertBox.style.border = isSuccess ? '1px solid #2ECC71' : '1px solid #E74C3C';
+      alertBox.style.color = isSuccess ? '#2ECC71' : '#E74C3C';
+      alertBox.innerHTML = `${isSuccess ? '<i class="fa-solid fa-circle-check"></i>' : '<i class="fa-solid fa-circle-exclamation"></i>'} ${msg}`;
+    };
+
+    const cfg = (typeof DarbarData !== 'undefined') ? DarbarData.getStoreConfig() : {};
+    const customPin = (typeof localStorage !== 'undefined') ? localStorage.getItem('darbar_custom_pin') : null;
+    const activePin = (cfg && cfg.adminPin) ? cfg.adminPin : (customPin || 'darbar2026');
+
+    if (curPin !== activePin) {
+      showAlert('موجودہ سیکیورٹی پن غلط ہے! براہ کرم درست پن درج کریں۔', false);
+      return;
+    }
+
+    if (!newPin || newPin.length < 4) {
+      showAlert('نیا سیکیورٹی پن کم از کم 4 ہندسوں یا حروف پر مشتمل ہونا چاہیے۔', false);
+      return;
+    }
+
+    if (newPin !== confirmPin) {
+      showAlert('نیا پن اور تصدیقی پن آپس میں نہیں ملتے! دوبارہ چیک کریں۔', false);
+      return;
+    }
+
+    // Save new PIN locally and into store configuration
+    cfg.adminPin = newPin;
+    DarbarData.saveStoreConfig(cfg);
+    if (typeof localStorage !== 'undefined') {
+      try {
+        localStorage.setItem('darbar_custom_pin', newPin);
+      } catch (err) {}
+    }
+
+    const pinInput = document.getElementById('adminPinCode');
+    if (pinInput) pinInput.value = '••••••••';
+
+    // Auto sync new PIN to Firebase Realtime Database
+    if (cfg && cfg.cloudSyncUrl) {
+      await this.pushToCloud(false);
+    }
+
+    showAlert('سیکیورٹی پن کامیابی سے تبدیل ہو گیا ہے! کلاؤڈ ڈیٹا بیس پر بھی اپڈیٹ ہو گیا۔', true);
+
+    setTimeout(() => {
+      this.closeChangePinModal();
+      if (typeof DarbarApp !== 'undefined') {
+        DarbarApp.showToast('🎉 نیا سیکیورٹی پن محفوظ ہو گیا۔ آئندہ اس نئے پن سے لاگ ان کریں۔');
+      }
+    }, 1200);
   },
 
   async pushToCloud(notify = true) {
