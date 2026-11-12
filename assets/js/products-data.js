@@ -4434,13 +4434,6 @@ const DarbarData = {
         urduName: "اسپیشل ساسز اور مایو",
         image: "https://images.unsplash.com/photo-1585238342024-78d387f4a707?w=500&auto=format&fit=crop&q=80",
         desc: "8 اقسام (چپوٹلے، گارلک مایو)"
-      },
-      {
-        id: "deals",
-        name: "Mega Saver Deals",
-        urduName: "شاہی بچت پیکجز",
-        image: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=500&auto=format&fit=crop&q=80",
-        desc: "3 خصوصی رعایتی بنڈلز"
       }
     ];
   },
@@ -4451,7 +4444,11 @@ const DarbarData = {
         const saved = window.localStorage.getItem('darbar_custom_categories');
         if (saved) {
           const parsed = JSON.parse(saved);
-          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            // Keep clean separated categories (filter out deals since deals have dedicated tab)
+            const cleaned = parsed.filter(c => c.id !== 'deals');
+            if (cleaned.length >= 5) return cleaned;
+          }
         }
       }
     } catch (e) {}
@@ -4530,6 +4527,40 @@ const DarbarData = {
 
   removeProductFromCategory(productId) {
     return this.assignProductToCategory(productId, 'special-masalay');
+  },
+
+  // ==============================================================
+  // DEALS MANAGEMENT SYSTEM (میگا بچت ڈیلز ڈیٹا کنٹرول)
+  // ==============================================================
+  getDeals() {
+    return this.getProducts().filter(p => p.category === 'deals');
+  },
+
+  getDealById(id) {
+    return this.getProductById(id);
+  },
+
+  saveDeal(dealData) {
+    const list = [...this.getProducts()];
+    if (!dealData.id) {
+      dealData.id = (dealData.title || 'deal').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || ('deal-' + Date.now());
+    }
+    dealData.category = 'deals';
+    dealData.categoryName = 'Saver Deals';
+    dealData.isDeal = true;
+
+    const existingIndex = list.findIndex(p => p.id === dealData.id);
+    if (existingIndex >= 0) {
+      list[existingIndex] = Object.assign({}, list[existingIndex], dealData);
+    } else {
+      list.unshift(dealData);
+    }
+    this.saveProducts(list);
+    return dealData;
+  },
+
+  deleteDeal(id) {
+    return this.deleteProduct(id);
   },
 
   async syncFromCloud() {

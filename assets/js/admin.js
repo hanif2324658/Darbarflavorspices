@@ -26,6 +26,14 @@ const DarbarAdmin = {
     sauces: 'https://images.unsplash.com/photo-1472476443507-c7a5948772fc?w=700&auto=format&fit=crop&q=80'
   },
 
+  presetDealImages: {
+    dawat: 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=800&auto=format&fit=crop&q=80',
+    ration: 'https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=800&auto=format&fit=crop&q=80',
+    fastfood: 'https://images.unsplash.com/photo-1585109649139-366815a0d713?w=800&auto=format&fit=crop&q=80',
+    bbq: 'https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=800&auto=format&fit=crop&q=80',
+    ramadan: 'https://images.unsplash.com/photo-1509358271058-acd22cc93898?w=800&auto=format&fit=crop&q=80'
+  },
+
   init() {
     if (!this.checkAuth()) {
       return;
@@ -34,6 +42,7 @@ const DarbarAdmin = {
     this.renderMetrics();
     this.renderProductsTable();
     this.renderCategories();
+    this.renderDeals();
     this.renderOrdersTable();
     this.renderReviews();
     this.loadStoreSettings();
@@ -80,6 +89,7 @@ const DarbarAdmin = {
       this.renderMetrics();
       this.renderProductsTable();
       this.renderCategories();
+      this.renderDeals();
       this.renderOrdersTable();
       this.renderReviews();
       this.loadStoreSettings();
@@ -1715,6 +1725,332 @@ const DarbarAdmin = {
   },
 
   // ==============================================================
+  // MEGA DEALS CONTROLLER (میگا بچت ڈیلز کا مکمل نظام)
+  // ==============================================================
+  dealSearchQuery: '',
+
+  renderDeals() {
+    const grid = document.getElementById('adminDealsGrid');
+    if (!grid) return;
+
+    try {
+      let deals = [];
+      if (typeof DarbarData !== 'undefined' && typeof DarbarData.getDeals === 'function') {
+        deals = DarbarData.getDeals();
+      }
+      if (!Array.isArray(deals) || deals.length === 0) {
+        if (typeof DarbarData !== 'undefined') {
+          deals = DarbarData.getProductsByCategory('deals');
+        }
+      }
+
+      if (this.dealSearchQuery) {
+        const q = this.dealSearchQuery.toLowerCase();
+        deals = deals.filter(d => 
+          (d.title && d.title.toLowerCase().includes(q)) ||
+          (d.urduTitle && d.urduTitle.includes(q)) ||
+          (d.ingredients && d.ingredients.includes(q)) ||
+          (d.shortDesc && d.shortDesc.toLowerCase().includes(q))
+        );
+      }
+
+      if (!deals || deals.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 40px 20px; background: #FAF8F5; border: 1.5px dashed #DED8CE; border-radius: 12px;">
+            <i class="fa-solid fa-gift" style="font-size: 2.2rem; color: var(--admin-gold); margin-bottom: 10px;"></i>
+            <h4 style="margin: 0; color: var(--admin-text-main);">کوئی میگا ڈیل نہیں ملی</h4>
+            <p style="color: #777; font-size: 0.88rem; margin: 6px 0 16px;">اوپر دیئے گئے بٹن سے نئی میگا بچت ڈیل تیار کریں۔</p>
+            <button class="btn-tool btn-tool-primary" onclick="DarbarAdmin.openAddDealModal()">
+              <i class="fa-solid fa-plus"></i> نئی میگا ڈیل بنائیں
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = deals.map(deal => {
+        const dealPrice = deal.defaultPrice || (deal.weightOptions && deal.weightOptions[0] ? deal.weightOptions[0].price : 899);
+        const origPrice = deal.defaultOriginalPrice || (deal.weightOptions && deal.weightOptions[0] ? deal.weightOptions[0].originalPrice : dealPrice + 270);
+        const savings = Math.max(0, origPrice - dealPrice);
+        const isAvailable = deal.inStock !== false;
+        const badge = deal.badge || 'SUPER SAVER';
+
+        // Extract included items tags
+        let itemsTagsHTML = '';
+        if (deal.ingredients) {
+          const itemsArr = deal.ingredients.split(/[,،]+/).map(s => s.trim()).filter(Boolean);
+          itemsTagsHTML = itemsArr.slice(0, 5).map(it => `<span class="category-item-tag">${it}</span>`).join('');
+          if (itemsArr.length > 5) {
+            itemsTagsHTML += `<span class="category-item-tag" style="background: #EFEAE2; color: #666;">+${itemsArr.length - 5} مزید</span>`;
+          }
+        } else {
+          itemsTagsHTML = `<span class="category-item-tag">بنڈل پیک</span>`;
+        }
+
+        return `
+        <div class="category-admin-card" id="deal-card-${deal.id}">
+          <div class="category-admin-thumb-wrap">
+            <img src="${deal.image || 'assets/images/logo.png'}" alt="${deal.title}" class="category-admin-thumb" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=500&auto=format&fit=crop&q=80';">
+            <div class="category-admin-badge" style="background: var(--admin-red); color: #fff;">
+              <i class="fa-solid fa-fire"></i> ${badge}
+            </div>
+          </div>
+
+          <div class="category-admin-body">
+            <div class="category-admin-header">
+              <div>
+                <h4 class="category-admin-title">${deal.title}</h4>
+                <div class="category-admin-urdu font-urdu">${deal.urduTitle || ''}</div>
+              </div>
+              <span class="status-badge ${isAvailable ? 'status-delivered' : 'status-cancelled'}" style="font-size: 0.72rem;">
+                ${isAvailable ? 'In Stock' : 'Out of Stock'}
+              </span>
+            </div>
+
+            <div style="margin: 6px 0; display: flex; align-items: baseline; gap: 8px;">
+              <strong style="color: #27AE60; font-size: 1.25rem;">Rs. ${dealPrice.toLocaleString()}</strong>
+              ${origPrice > dealPrice ? `<span style="color: #999; text-decoration: line-through; font-size: 0.85rem;">Rs. ${origPrice.toLocaleString()}</span>` : ''}
+              ${savings > 0 ? `<span style="background: #E8F5E9; color: #2E7D32; font-size: 0.72rem; font-weight: 700; padding: 2px 6px; border-radius: 4px;">بچت: Rs. ${savings.toLocaleString()}</span>` : ''}
+            </div>
+
+            <p class="category-admin-desc font-urdu" style="font-size: 0.82rem; color: #555;">${deal.urduShortDesc || deal.shortDesc || 'خصوصی شاہی بچت پیکج'}</p>
+
+            <div class="category-admin-items-preview">
+              <div style="font-size: 0.75rem; font-weight: 700; color: #666; margin-bottom: 4px;">
+                <i class="fa-solid fa-list-check" style="color: var(--admin-gold);"></i> ڈیل میں شامل اشیاء:
+              </div>
+              <div class="category-admin-items-tags">
+                ${itemsTagsHTML}
+              </div>
+            </div>
+
+            <div class="category-admin-actions">
+              <button type="button" class="btn-tool btn-tool-primary" style="flex: 1; padding: 8px 10px; font-size: 0.8rem;" onclick="DarbarAdmin.openEditDealModal('${deal.id}')">
+                <i class="fa-solid fa-pen-to-square"></i> ترمیم و تصویر
+              </button>
+              <button type="button" class="btn-tool btn-tool-secondary" style="flex: 1; padding: 8px 10px; font-size: 0.8rem;" onclick="DarbarAdmin.toggleDealStock('${deal.id}')">
+                <i class="fa-solid fa-warehouse"></i> ${isAvailable ? 'آؤٹ آف اسٹاک' : 'ان اسٹاک'}
+              </button>
+              <button type="button" class="action-btn action-btn-delete" title="ڈیل حذف کریں" onclick="DarbarAdmin.deleteDeal('${deal.id}')">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        `;
+      }).join('');
+    } catch (err) {
+      console.error('Error in renderDeals:', err);
+    }
+  },
+
+  filterDeals(query) {
+    this.dealSearchQuery = (query || '').trim();
+    this.renderDeals();
+  },
+
+  populateQuickSpiceChips() {
+    const container = document.getElementById('dealQuickSpiceChips');
+    if (!container || typeof DarbarData === 'undefined') return;
+
+    const products = DarbarData.getProducts().filter(p => p.category !== 'deals');
+    container.innerHTML = products.slice(0, 35).map(p => {
+      const name = p.urduTitle || p.title;
+      const safeName = name.replace(/'/g, "\\'");
+      return `<button type="button" class="category-item-tag" style="cursor: pointer; border: 1px solid #D5CEBE; background: #fff;" onclick="DarbarAdmin.appendSpiceToDeal('${safeName}')">+ ${name}</button>`;
+    }).join('');
+  },
+
+  appendSpiceToDeal(spiceName) {
+    const textarea = document.getElementById('dealItemsIncluded');
+    if (!textarea) return;
+    const current = textarea.value.trim();
+    const toAdd = `${spiceName} (100g)`;
+    if (current) {
+      textarea.value = current + '، ' + toAdd;
+    } else {
+      textarea.value = toAdd;
+    }
+  },
+
+  setDealPresetImage(key) {
+    const url = this.presetDealImages[key];
+    if (!url) return;
+    const input = document.getElementById('dealImageUrl');
+    if (input) {
+      input.value = url;
+      this.updateDealModalPreview(url);
+    }
+  },
+
+  updateDealModalPreview(url) {
+    const preview = document.getElementById('dealImagePreview');
+    if (!preview) return;
+    preview.src = url || 'assets/images/logo.png';
+  },
+
+  openAddDealModal() {
+    const modal = document.getElementById('adminDealModal');
+    if (!modal) return;
+
+    document.getElementById('dealModalTitle').innerHTML = '<i class="fa-solid fa-gift" style="color: var(--admin-gold);"></i> <span>نئی میگا ڈیل بنائیں (Add New Mega Deal)</span>';
+    document.getElementById('editDealId').value = '';
+    document.getElementById('dealTitleEn').value = '';
+    document.getElementById('dealTitleUr').value = '';
+    document.getElementById('dealPrice').value = '';
+    document.getElementById('dealOriginalPrice').value = '';
+    document.getElementById('dealBadge').value = '25% OFF';
+    document.getElementById('dealImageUrl').value = this.presetDealImages.dawat;
+    document.getElementById('dealItemsIncluded').value = '';
+    document.getElementById('dealShortDesc').value = '';
+    document.getElementById('dealUrduDesc').value = '';
+    document.getElementById('dealInStock').checked = true;
+
+    this.updateDealModalPreview(this.presetDealImages.dawat);
+    this.populateQuickSpiceChips();
+    modal.classList.add('active');
+  },
+
+  openEditDealModal(dealId) {
+    const modal = document.getElementById('adminDealModal');
+    if (!modal) return;
+    const deal = DarbarData.getProductById(dealId);
+    if (!deal) return;
+
+    document.getElementById('dealModalTitle').innerHTML = '<i class="fa-solid fa-pen-to-square" style="color: var(--admin-gold);"></i> <span>میگا ڈیل میں ترمیم (Edit Mega Deal)</span>';
+    document.getElementById('editDealId').value = deal.id;
+    document.getElementById('dealTitleEn').value = deal.title || '';
+    document.getElementById('dealTitleUr').value = deal.urduTitle || '';
+    document.getElementById('dealPrice').value = deal.defaultPrice || (deal.weightOptions && deal.weightOptions[0] ? deal.weightOptions[0].price : 899);
+    document.getElementById('dealOriginalPrice').value = deal.defaultOriginalPrice || (deal.weightOptions && deal.weightOptions[0] ? deal.weightOptions[0].originalPrice : 1169);
+    document.getElementById('dealBadge').value = deal.badge || 'SUPER SAVER';
+    document.getElementById('dealImageUrl').value = deal.image || this.presetDealImages.dawat;
+    document.getElementById('dealItemsIncluded').value = deal.ingredients || '';
+    document.getElementById('dealShortDesc').value = deal.shortDesc || '';
+    document.getElementById('dealUrduDesc').value = deal.urduShortDesc || '';
+    document.getElementById('dealInStock').checked = deal.inStock !== false;
+
+    this.updateDealModalPreview(deal.image || this.presetDealImages.dawat);
+    this.populateQuickSpiceChips();
+    modal.classList.add('active');
+  },
+
+  closeDealModal() {
+    const modal = document.getElementById('adminDealModal');
+    if (modal) modal.classList.remove('active');
+  },
+
+  async handleDealFormSubmit(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const editId = document.getElementById('editDealId').value.trim();
+    const titleEn = document.getElementById('dealTitleEn').value.trim();
+    const titleUr = document.getElementById('dealTitleUr').value.trim();
+    const price = parseInt(document.getElementById('dealPrice').value, 10) || 899;
+    const origPrice = parseInt(document.getElementById('dealOriginalPrice').value, 10) || price;
+    const badge = document.getElementById('dealBadge').value.trim() || 'SUPER SAVER';
+    const image = document.getElementById('dealImageUrl').value.trim() || this.presetDealImages.dawat;
+    const itemsIncluded = document.getElementById('dealItemsIncluded').value.trim();
+    const shortDesc = document.getElementById('dealShortDesc').value.trim();
+    const urduDesc = document.getElementById('dealUrduDesc').value.trim();
+    const inStock = document.getElementById('dealInStock').checked;
+
+    let dealId = editId;
+    if (!dealId) {
+      dealId = titleEn.toLowerCase().replace(/[^a-z0-9_-]/g, '-').replace(/(^-|-$)/g, '') || ('deal-' + Date.now());
+    }
+
+    const dealData = {
+      id: dealId,
+      title: titleEn,
+      urduTitle: titleUr,
+      category: 'deals',
+      categoryName: 'Saver Deals',
+      badge: badge,
+      rating: 4.8,
+      reviewsCount: 150,
+      image: image,
+      gallery: [image],
+      weightOptions: [
+        {
+          weight: 'Standard Deal Pack',
+          price: price,
+          originalPrice: origPrice
+        }
+      ],
+      defaultPrice: price,
+      defaultOriginalPrice: origPrice,
+      inStock: inStock,
+      isFeatured: true,
+      ingredients: itemsIncluded,
+      shortDesc: shortDesc || `Special discount deal package: ${titleEn}`,
+      urduShortDesc: urduDesc || `خصوصی رعایتی شاہی ڈیل پیکیج: ${titleUr}`,
+      description: `${titleEn} (${titleUr}). Crafted with 100% pure ingredients. Items included: ${itemsIncluded}.`,
+      recipeMethod: 'Complete value pack for home and festive cooking.'
+    };
+
+    if (editId) {
+      DarbarData.updateProduct(editId, dealData);
+    } else {
+      DarbarData.addProduct(dealData);
+    }
+
+    // Auto sync to Firebase
+    const cfg = DarbarData.getStoreConfig();
+    if (cfg && cfg.cloudSyncUrl) {
+      await this.pushToCloud(false);
+    }
+
+    this.renderDeals();
+    this.renderProductsTable();
+    this.closeDealModal();
+
+    if (typeof DarbarApp !== 'undefined') {
+      DarbarApp.showToast(`میگا ڈیل "${titleEn}" محفوظ ہو گئی!`);
+    }
+  },
+
+  async toggleDealStock(dealId) {
+    const deal = DarbarData.getProductById(dealId);
+    if (!deal) return;
+    const newStatus = deal.inStock === false ? true : false;
+    DarbarData.updateProduct(dealId, { inStock: newStatus });
+
+    const cfg = DarbarData.getStoreConfig();
+    if (cfg && cfg.cloudSyncUrl) {
+      await this.pushToCloud(false);
+    }
+
+    this.renderDeals();
+    this.renderProductsTable();
+
+    if (typeof DarbarApp !== 'undefined') {
+      DarbarApp.showToast(`ڈیل کا اسٹاک اسٹیٹس تبدیل ہو گیا۔`);
+    }
+  },
+
+  async deleteDeal(dealId) {
+    const deal = DarbarData.getProductById(dealId);
+    const title = deal ? deal.title : dealId;
+    if (!confirm(`کیا آپ واقعی میگا ڈیل "${title}" کو حذف کرنا چاہتے ہیں؟`)) {
+      return;
+    }
+
+    DarbarData.deleteProduct(dealId);
+
+    const cfg = DarbarData.getStoreConfig();
+    if (cfg && cfg.cloudSyncUrl) {
+      await this.pushToCloud(false);
+    }
+
+    this.renderDeals();
+    this.renderProductsTable();
+
+    if (typeof DarbarApp !== 'undefined') {
+      DarbarApp.showToast(`میگا ڈیل "${title}" حذف کر دی گئی۔`);
+    }
+  },
+
+  // ==============================================================
   // EVENT LISTENERS & TAB CONTROLS
   // ==============================================================
   setupEventListeners() {
@@ -1728,6 +2064,8 @@ const DarbarAdmin = {
 
         document.getElementById('productsSection').style.display = tab === 'products' ? 'block' : 'none';
         document.getElementById('categoriesSection').style.display = tab === 'categories' ? 'block' : 'none';
+        const dealsSec = document.getElementById('dealsSection');
+        if (dealsSec) dealsSec.style.display = tab === 'deals' ? 'block' : 'none';
         document.getElementById('ordersSection').style.display = tab === 'orders' ? 'block' : 'none';
         document.getElementById('reviewsSection').style.display = tab === 'reviews' ? 'block' : 'none';
         document.getElementById('storeSection').style.display = tab === 'store' ? 'block' : 'none';
@@ -1735,6 +2073,8 @@ const DarbarAdmin = {
 
         if (tab === 'categories') {
           this.renderCategories();
+        } else if (tab === 'deals') {
+          this.renderDeals();
         } else if (tab === 'products') {
           this.renderProductsTable();
         } else if (tab === 'orders') {
@@ -1746,6 +2086,15 @@ const DarbarAdmin = {
         }
       });
     });
+
+    // Deals search
+    const dealSearch = document.getElementById('adminDealSearch');
+    if (dealSearch) {
+      dealSearch.addEventListener('input', (e) => {
+        this.dealSearchQuery = e.target.value.trim();
+        this.renderDeals();
+      });
+    }
 
     // Product search
     const prodSearch = document.getElementById('adminProductSearch');
